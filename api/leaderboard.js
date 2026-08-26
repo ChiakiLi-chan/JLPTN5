@@ -52,7 +52,8 @@ export default async function handler(req, res) {
     }
     const key = leaderboardKey(category, count, mode);
     try {
-      const raw = await redis.zRangeWithScores(key, 0, LEADERBOARD_MAX_ENTRIES - 1, { REV: false });
+      const raw = await redis.zRangeWithScores(key, 0, LEADERBOARD_MAX_ENTRIES - 1);
+      console.log("REDIS GET RESULT:", raw);
       return res.status(200).json({ entries: parseZRangeResult(raw) });
     } catch (err) {
       console.error("leaderboard GET failed", err);
