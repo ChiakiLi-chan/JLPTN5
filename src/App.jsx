@@ -569,6 +569,7 @@ function QuizSetup({ pool, onBack, onStart }) {
       finalConfig[cat] = customizePerCategory ? perCategoryConfig[cat] || defaultOtherConfig() : sharedConfig;
     });
     if (kanjiPresent) finalConfig["Kanji"] = kanjiConfig;
+    console.log("finalConfig at start:", finalConfig, "sharedConfig:", sharedConfig);
     onStart({ pool, count, overflowChoice, perCategoryConfig: finalConfig, mode, timeLimitSeconds });
   };
 
