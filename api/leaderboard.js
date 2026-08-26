@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     }
     const key = leaderboardKey(category, count, mode);
     try {
-      const raw = await redis.zrange(key, 0, LEADERBOARD_MAX_ENTRIES - 1, { withScores: true });
+      const raw = await redis.zRangeWithScores(key, 0, LEADERBOARD_MAX_ENTRIES - 1);
       return res.status(200).json({ entries: parseZRangeResult(raw) });
     } catch (err) {
       console.error("leaderboard GET failed", err);
@@ -86,11 +86,11 @@ export default async function handler(req, res) {
     const member = JSON.stringify({ name: safeName, date: Date.now(), score, total });
 
     try {
-      await redis.zadd(key, { score: timeSeconds, member });
+      await redis.zAdd(key, { score: timeSeconds, value: member });
       // Keep only the fastest LEADERBOARD_MAX_ENTRIES — ranks beyond that
       // (the slower ones, since ascending order) get dropped.
-      await redis.zremrangebyrank(key, LEADERBOARD_MAX_ENTRIES, -1);
-      const raw = await redis.zrange(key, 0, LEADERBOARD_MAX_ENTRIES - 1, { withScores: true });
+      await redis.zRemRangeByRank(key, LEADERBOARD_MAX_ENTRIES, -1);
+      const raw = await redis.zRangeWithScores(key, 0, LEADERBOARD_MAX_ENTRIES - 1);
       return res.status(200).json({ entries: parseZRangeResult(raw) });
     } catch (err) {
       console.error("leaderboard POST failed", err);
