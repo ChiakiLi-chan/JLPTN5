@@ -232,13 +232,21 @@ export default function N5Dojo() {
       {screen === "home" && (
         <Home
           selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
           pool={pool}
           showFurigana={showFurigana}
           setShowFurigana={setShowFurigana}
           onQuiz={() => setScreen("quizSetup")}
           onMatch={() => setScreen("match")}
           onViewLeaderboards={() => setScreen("leaderboards")}
+          onEditCategories={() => setScreen("categoryPicker")}
+        />
+      )}
+
+      {screen === "categoryPicker" && (
+        <CategoryPicker
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+          onBack={() => setScreen("home")}
         />
       )}
 
@@ -294,19 +302,19 @@ export default function N5Dojo() {
 
 /* ============================== HOME ============================== */
 
-function Home({ selectedCategories, setSelectedCategories, pool, showFurigana, setShowFurigana, onQuiz, onMatch, onViewLeaderboards }) {
+function Home({ selectedCategories, pool, showFurigana, setShowFurigana, onQuiz, onMatch, onViewLeaderboards, onEditCategories }) {
   const allSelected = selectedCategories.length === CATEGORIES.length;
   const furiganaRelevant = pool.some((i) => FURIGANA_CATEGORIES.has(i.category) && i.kana);
 
-  const toggleCategory = (key) => {
-    setSelectedCategories((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
-    );
-  };
-
-  const toggleAll = () => {
-    setSelectedCategories(allSelected ? [] : CATEGORIES.map((c) => c.key));
-  };
+  const selectedLabels = CATEGORIES.filter((c) => selectedCategories.includes(c.key)).map((c) => c.label);
+  const summaryText =
+    selectedCategories.length === 0
+      ? "None selected"
+      : allSelected
+      ? "All categories"
+      : selectedLabels.length <= 3
+      ? selectedLabels.join(", ")
+      : `${selectedLabels.slice(0, 3).join(", ")} +${selectedLabels.length - 3} more`;
 
   return (
     <div className="screen home-screen">
@@ -323,25 +331,15 @@ function Home({ selectedCategories, setSelectedCategories, pool, showFurigana, s
         <p className="home-tagline">JLPT N5 practice — from your word list</p>
       </header>
 
-      <section className="category-picker" aria-label="Choose categories">
-        <button className={`select-all-btn${allSelected ? " select-all-active" : ""}`} onClick={toggleAll}>
-          {allSelected ? "Deselect all" : "Select all"}
-        </button>
-        <div className="category-rail">
-        {CATEGORIES.map((c) => (
-          <button
-            key={c.key}
-            className={`chip${selectedCategories.includes(c.key) ? " chip-active" : ""}`}
-            onClick={() => toggleCategory(c.key)}
-            aria-pressed={selectedCategories.includes(c.key)}
-          >
-            <span className="chip-check" aria-hidden="true">{selectedCategories.includes(c.key) ? <Check size={12} /> : null}</span>
-            <span className="chip-jp">{c.label}</span>
-            <span className="chip-en">{c.items.length}</span>
-          </button>
-        ))}
+      <button className="category-summary" onClick={onEditCategories}>
+        <div className="category-summary-text">
+          <span className="category-summary-label">Categories</span>
+          <span className={`category-summary-value${selectedCategories.length === 0 ? " category-summary-empty" : ""}`}>
+            {summaryText}
+          </span>
         </div>
-      </section>
+        <ChevronRight size={18} />
+      </button>
 
       <label className={`furigana-toggle${furiganaRelevant ? "" : " furigana-toggle-dim"}`}>
         <input type="checkbox" checked={showFurigana} onChange={(e) => setShowFurigana(e.target.checked)} />
@@ -371,6 +369,58 @@ function Home({ selectedCategories, setSelectedCategories, pool, showFurigana, s
       </button>
 
       <footer className="home-footer">{ALL_ITEMS.length} terms total · {pool.length} in your selection</footer>
+    </div>
+  );
+}
+
+/* ============================== CATEGORY PICKER ============================== */
+
+function CategoryPicker({ selectedCategories, setSelectedCategories, onBack }) {
+  const allSelected = selectedCategories.length === CATEGORIES.length;
+
+  const toggleCategory = (key) => {
+    setSelectedCategories((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  };
+
+  const toggleAll = () => {
+    setSelectedCategories(allSelected ? [] : CATEGORIES.map((c) => c.key));
+  };
+
+  return (
+    <div className="screen picker-screen">
+      <div className="quiz-topbar">
+        <button className="icon-btn" onClick={onBack} aria-label="Back to home">
+          <ArrowLeft size={18} />
+        </button>
+        <span className="setup-title">Choose categories</span>
+        <button className="picker-select-all" onClick={toggleAll}>
+          {allSelected ? "Deselect all" : "Select all"}
+        </button>
+      </div>
+
+      <div className="picker-list">
+        {CATEGORIES.map((c) => {
+          const active = selectedCategories.includes(c.key);
+          return (
+            <button
+              key={c.key}
+              className={`picker-card${active ? " picker-card-active" : ""}`}
+              onClick={() => toggleCategory(c.key)}
+              aria-pressed={active}
+            >
+              <span className="picker-card-text">
+                <span className="picker-card-label">{c.label}</span>
+                <span className="picker-card-count">{c.items.length} terms</span>
+              </span>
+              <span className="picker-card-check" aria-hidden="true">
+                {active ? <Check size={16} /> : null}
+              </span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -1324,14 +1374,40 @@ body {
 .dojo-suffix { font-size: 26px; margin-left: 4px; color: var(--hanko); }
 .home-tagline { margin: 6px 0 0; color: var(--ink-soft); font-size: 13.5px; }
 
-.category-picker { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-.select-all-btn {
-  width: 100%; background: transparent; border: 1.5px dashed rgba(42,39,35,0.28); border-radius: 12px;
-  padding: 10px 14px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--ink-soft); transition: all .15s ease;
+.category-summary {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.14); border-radius: 12px;
+  padding: 13px 16px; margin-bottom: 20px; color: var(--indigo); transition: border-color .15s ease;
 }
-.select-all-btn:hover { border-color: var(--indigo); color: var(--indigo); }
-.select-all-active { background: var(--indigo); border-style: solid; border-color: var(--indigo); color: #fff; }
+.category-summary:hover { border-color: var(--indigo); }
+.category-summary-text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; min-width: 0; }
+.category-summary-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); }
+.category-summary-value {
+  font-size: 14px; font-weight: 700; color: var(--indigo-deep);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;
+}
+.category-summary-empty { color: var(--hanko); }
+
+.picker-select-all { background: none; border: none; font-size: 12px; font-weight: 700; color: var(--indigo); padding: 6px; }
+.picker-select-all:hover { color: var(--indigo-deep); text-decoration: underline; }
+.picker-list { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; padding: 2px 2px 4px; }
+.picker-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
+  background: #fff; border: 1.5px solid rgba(42,39,35,0.14); border-radius: 14px; padding: 16px 18px;
+  transition: all .15s ease; text-align: left;
+}
+.picker-card:hover { border-color: var(--indigo); }
+.picker-card-active { background: var(--indigo); border-color: var(--indigo); box-shadow: 0 6px 16px rgba(31,63,92,0.25); }
+.picker-card-text { display: flex; flex-direction: column; gap: 2px; }
+.picker-card-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 15px; font-weight: 700; color: var(--ink); }
+.picker-card-count { font-size: 12px; color: var(--ink-soft); }
+.picker-card-active .picker-card-label { color: #fff; }
+.picker-card-active .picker-card-count { color: rgba(255,255,255,0.7); }
+.picker-card-check {
+  display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%;
+  border: 1.5px solid rgba(42,39,35,0.2); color: transparent; flex-shrink: 0;
+}
+.picker-card-active .picker-card-check { background: #fff; border-color: #fff; color: var(--indigo); }
 
 .category-rail {
   display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
@@ -1570,6 +1646,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
   .home-header h1 { font-size: 48px; }
   .home-tagline { font-size: 15px; }
   .hanko-mark { width: 54px; height: 54px; }
+  .category-rail { max-height: none; overflow: visible; padding: 2px; }
   .chip { padding: 13px 16px; }
   .chip-jp { font-size: 14.5px; }
   .chip-en { font-size: 11.5px; }
