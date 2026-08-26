@@ -23,10 +23,10 @@ function parseZRangeResult(raw) {
   // alternating [member, score, member, score, ...] for withScores.
   // Handle that shape, and defensively handle an array-of-objects shape too
   // in case the client version differs.
-  if (Array.isArray(raw) && raw.length && typeof raw[0] === "object" && raw[0] !== null && "member" in raw[0]) {
+  if (Array.isArray(raw) && raw.length && typeof raw[0] === "object" && raw[0] !== null && "value" in raw[0]) {
     for (const r of raw) {
       try {
-        entries.push({ ...JSON.parse(r.member), timeSeconds: Number(r.score) });
+        entries.push({ ...JSON.parse(r.value), timeSeconds: Number(r.score) });
       } catch {
         // skip a corrupt entry rather than failing the whole request
       }
