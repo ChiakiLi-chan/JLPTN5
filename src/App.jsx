@@ -569,7 +569,6 @@ function QuizSetup({ pool, onBack, onStart }) {
       finalConfig[cat] = customizePerCategory ? perCategoryConfig[cat] || defaultOtherConfig() : sharedConfig;
     });
     if (kanjiPresent) finalConfig["Kanji"] = kanjiConfig;
-    console.log("finalConfig at start:", finalConfig, "sharedConfig:", sharedConfig);
     onStart({ pool, count, overflowChoice, perCategoryConfig: finalConfig, mode, timeLimitSeconds });
   };
 
@@ -1255,6 +1254,25 @@ function LeaderboardBrowser({ onBack }) {
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
 
+:root { color-scheme: light; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(620px 380px at 50% -6%, rgba(207,154,44,0.14), transparent 65%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.028) 0, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 38px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.028) 0, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 38px),
+    linear-gradient(160deg, #1c3d59 0%, #0e2033 100%);
+}
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
 .dojo-root {
   --paper: #eae3cf;
   --paper-deep: #ddd3b6;
@@ -1267,13 +1285,15 @@ const CSS = `
   --hanko: #a83a32;
   --success: #4c7a4a;
   position: relative;
-  min-height: 100%;
+  width: 100%;
+  max-width: 440px;
   background: var(--paper);
   color: var(--ink);
   font-family: 'Zen Kaku Gothic New', sans-serif;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 22px;
   isolation: isolate;
+  box-shadow: 0 44px 90px -28px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.05);
 }
 .dojo-root *, .dojo-root *::before, .dojo-root *::after { box-sizing: border-box; }
 .dojo-root button { font-family: inherit; cursor: pointer; }
@@ -1524,6 +1544,18 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .btn-primary:hover:not(:disabled) { background: var(--indigo-deep); }
 .btn-ghost { background: transparent; border: 1.5px solid rgba(42,39,35,0.18); border-radius: 10px; padding: 11px 20px; font-weight: 700; font-size: 14px; color: var(--ink); }
 .btn-ghost:hover { border-color: var(--indigo); color: var(--indigo); }
+
+@media (max-width: 480px) {
+  body { background: #eae3cf; }
+  #root { min-height: 100vh; min-height: 100dvh; padding: 0; align-items: stretch; }
+  .dojo-root {
+    max-width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
 
 @media (max-width: 420px) {
   .mode-grid { grid-template-columns: 1fr; }
