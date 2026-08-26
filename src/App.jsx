@@ -376,22 +376,28 @@ function Home({ selectedCategories, pool, showFurigana, setShowFurigana, onQuiz,
 /* ============================== CATEGORY PICKER ============================== */
 
 function CategoryPicker({ selectedCategories, setSelectedCategories, onBack }) {
-  const allSelected = selectedCategories.length === CATEGORIES.length;
+  const [draft, setDraft] = useState(selectedCategories);
+  const allSelected = draft.length === CATEGORIES.length;
 
   const toggleCategory = (key) => {
-    setSelectedCategories((prev) =>
+    setDraft((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
 
   const toggleAll = () => {
-    setSelectedCategories(allSelected ? [] : CATEGORIES.map((c) => c.key));
+    setDraft(allSelected ? [] : CATEGORIES.map((c) => c.key));
+  };
+
+  const handleConfirm = () => {
+    setSelectedCategories(draft);
+    onBack();
   };
 
   return (
     <div className="screen picker-screen">
       <div className="quiz-topbar">
-        <button className="icon-btn" onClick={onBack} aria-label="Back to home">
+        <button className="icon-btn" onClick={onBack} aria-label="Cancel">
           <ArrowLeft size={18} />
         </button>
         <span className="setup-title">Choose categories</span>
@@ -402,7 +408,7 @@ function CategoryPicker({ selectedCategories, setSelectedCategories, onBack }) {
 
       <div className="picker-list">
         {CATEGORIES.map((c) => {
-          const active = selectedCategories.includes(c.key);
+          const active = draft.includes(c.key);
           return (
             <button
               key={c.key}
@@ -421,6 +427,10 @@ function CategoryPicker({ selectedCategories, setSelectedCategories, onBack }) {
           );
         })}
       </div>
+
+      <button className="btn-primary picker-confirm" onClick={handleConfirm} disabled={draft.length === 0}>
+        Confirm · {draft.length} selected
+      </button>
     </div>
   );
 }
@@ -1408,6 +1418,7 @@ body {
   border: 1.5px solid rgba(42,39,35,0.2); color: transparent; flex-shrink: 0;
 }
 .picker-card-active .picker-card-check { background: #fff; border-color: #fff; color: var(--indigo); }
+.picker-confirm { width: 100%; margin-top: 14px; padding: 14px 20px; font-size: 15px; flex-shrink: 0; }
 
 .category-rail {
   display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
