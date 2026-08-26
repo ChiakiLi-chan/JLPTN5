@@ -1,14 +1,15 @@
-import { Redis } from "@upstash/redis";
+import { createClient } from "redis";
 import { LEADERBOARD_MAX_ENTRIES, leaderboardKey, meetsAccuracyBar } from "../shared/leaderboardRules.js";
 
 // Vercel's own KV product is deprecated in favor of Redis integrations from
 // the Marketplace (Upstash and others), which land under either naming
 // convention depending on how/when the integration was added. Support both
 // so this doesn't silently break based on which one your project has.
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
+const redis = createClient({
+  url: process.env.REDIS_URL,
 });
+
+await redis.connect();
 
 // Redis sorted sets are a natural fit here: score = timeSeconds (lower is
 // better), member = JSON blob with the display fields. ZRANGE with no
