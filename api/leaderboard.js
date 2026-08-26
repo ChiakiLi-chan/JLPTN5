@@ -87,6 +87,7 @@ export default async function handler(req, res) {
 
     try {
       await redis.zAdd(key, { score: timeSeconds, value: member });
+    console.log("SAVED TO REDIS:", key, member);
       // Keep only the fastest LEADERBOARD_MAX_ENTRIES — ranks beyond that
       // (the slower ones, since ascending order) get dropped.
       await redis.zRemRangeByRank(key, LEADERBOARD_MAX_ENTRIES, -1);
