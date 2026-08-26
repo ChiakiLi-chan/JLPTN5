@@ -26,7 +26,8 @@ function parseZRangeResult(raw) {
   if (Array.isArray(raw) && raw.length && typeof raw[0] === "object" && raw[0] !== null && "value" in raw[0]) {
     for (const r of raw) {
       try {
-        entries.push({ ...JSON.parse(r.value), timeSeconds: Number(r.score) });
+        const data = JSON.parse(r.value);
+        entries.push({ ...data, timeSeconds: Number(data.timeSeconds) });
       } catch {
         // skip a corrupt entry rather than failing the whole request
       }
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
 
     const key = leaderboardKey(category, count, mode);
     const safeName = String(name || "Anonymous").trim().slice(0, 24) || "Anonymous";
-    const member = JSON.stringify({ name: safeName, date: Date.now(), score, total });
+    const member = JSON.stringify({ name: safeName, date: Date.now(), score, total, timeSeconds });
 
     try {
       const rankingScore = (total - score) * 1000000 + timeSeconds;
