@@ -323,10 +323,11 @@ function Home({ selectedCategories, setSelectedCategories, pool, showFurigana, s
         <p className="home-tagline">JLPT N5 practice — from your word list</p>
       </header>
 
-      <section className="category-rail" aria-label="Choose categories">
-        <button className={`chip chip-selectall${allSelected ? " chip-active" : ""}`} onClick={toggleAll}>
-          <span className="chip-jp">{allSelected ? "Deselect all" : "Select all"}</span>
+      <section className="category-picker" aria-label="Choose categories">
+        <button className={`select-all-btn${allSelected ? " select-all-active" : ""}`} onClick={toggleAll}>
+          {allSelected ? "Deselect all" : "Select all"}
         </button>
+        <div className="category-rail">
         {CATEGORIES.map((c) => (
           <button
             key={c.key}
@@ -339,6 +340,7 @@ function Home({ selectedCategories, setSelectedCategories, pool, showFurigana, s
             <span className="chip-en">{c.items.length}</span>
           </button>
         ))}
+        </div>
       </section>
 
       <label className={`furigana-toggle${furiganaRelevant ? "" : " furigana-toggle-dim"}`}>
@@ -1286,7 +1288,8 @@ body {
   --success: #4c7a4a;
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
+  min-height: 720px;
   background: var(--paper);
   color: var(--ink);
   font-family: 'Zen Kaku Gothic New', sans-serif;
@@ -1294,6 +1297,8 @@ body {
   border-radius: 22px;
   isolation: isolate;
   box-shadow: 0 44px 90px -28px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
 }
 .dojo-root *, .dojo-root *::before, .dojo-root *::after { box-sizing: border-box; }
 .dojo-root button { font-family: inherit; cursor: pointer; }
@@ -1307,7 +1312,7 @@ body {
     repeating-linear-gradient(90deg, var(--paper-line) 0, var(--paper-line) 1px, transparent 1px, transparent 34px);
 }
 
-.screen { position: relative; z-index: 1; padding: 28px 22px 24px; display: flex; flex-direction: column; min-height: 520px; }
+.screen { position: relative; z-index: 1; padding: 28px 22px 24px; display: flex; flex-direction: column; flex: 1; min-height: 520px; }
 
 /* ---------- Home ---------- */
 .home-header { text-align: center; margin-bottom: 18px; }
@@ -1319,20 +1324,36 @@ body {
 .dojo-suffix { font-size: 26px; margin-left: 4px; color: var(--hanko); }
 .home-tagline { margin: 6px 0 0; color: var(--ink-soft); font-size: 13.5px; }
 
-.category-rail { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; max-height: 148px; overflow-y: auto; padding: 2px; }
-.chip {
-  background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.12); border-radius: 999px;
-  padding: 8px 16px; display: flex; align-items: center; gap: 6px; transition: all .15s ease;
+.category-picker { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.select-all-btn {
+  width: 100%; background: transparent; border: 1.5px dashed rgba(42,39,35,0.28); border-radius: 12px;
+  padding: 10px 14px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-soft); transition: all .15s ease;
 }
-.chip-check { display: flex; align-items: center; color: #fff; width: 12px; }
+.select-all-btn:hover { border-color: var(--indigo); color: var(--indigo); }
+.select-all-active { background: var(--indigo); border-style: solid; border-color: var(--indigo); color: #fff; }
+
+.category-rail {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  max-height: 190px; overflow-y: auto; padding: 2px 10px 2px 2px;
+  scrollbar-width: thin; scrollbar-color: var(--indigo) transparent;
+}
+.category-rail::-webkit-scrollbar { width: 6px; }
+.category-rail::-webkit-scrollbar-track { background: transparent; }
+.category-rail::-webkit-scrollbar-thumb { background: rgba(31,63,92,0.35); border-radius: 999px; }
+.category-rail::-webkit-scrollbar-thumb:hover { background: var(--indigo); }
+
+.chip {
+  background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.12); border-radius: 12px;
+  padding: 11px 14px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all .15s ease;
+}
+.chip-check { display: flex; align-items: center; color: #fff; width: 12px; flex-shrink: 0; }
 .chip-jp { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; font-weight: 700; }
 .chip-en { font-size: 10.5px; color: var(--ink-soft); letter-spacing: 0.04em; }
-.chip:hover { border-color: var(--indigo); }
-.chip-active { background: var(--indigo); border-color: var(--indigo); }
+.chip:hover { border-color: var(--indigo); transform: translateY(-1px); }
+.chip-active { background: var(--indigo); border-color: var(--indigo); box-shadow: 0 4px 12px rgba(31,63,92,0.28); }
 .chip-active .chip-jp { color: #fff; }
 .chip-active .chip-en { color: rgba(255,255,255,0.75); }
-.chip-selectall { border-style: dashed; }
-.chip-selectall.chip-active { border-style: solid; }
 
 .furigana-toggle { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 20px; cursor: pointer; user-select: none; }
 .furigana-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -1453,8 +1474,8 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 /* ---------- Quiz card ---------- */
 .quiz-card {
   position: relative; background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.12); border-radius: 16px;
-  padding: 30px 18px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 18px;
-  min-height: 150px; justify-content: center; overflow: hidden;
+  padding: 30px 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 18px;
+  min-height: 150px; flex: 1.1; justify-content: center; overflow: hidden;
 }
 .countdown {
   position: absolute; top: 10px; right: 12px; background: var(--indigo); color: #fff; font-weight: 800;
@@ -1463,7 +1484,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .countdown-urgent { background: var(--hanko); animation: pulse 0.6s ease infinite alternate; }
 @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
 .quiz-instruction { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
-.jp-display { font-family: 'Shippori Mincho', serif; font-size: 44px; font-weight: 700; color: var(--ink); text-align: center; word-break: break-word; }
+.jp-display { font-family: 'Shippori Mincho', serif; font-size: 50px; font-weight: 700; color: var(--ink); text-align: center; word-break: break-word; }
 .jp-display.romaji-display { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 32px; font-style: italic; }
 
 .stamp-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
@@ -1477,11 +1498,11 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .ink-cross path { stroke: var(--ink); stroke-width: 9; stroke-linecap: round; opacity: 0.75; }
 @keyframes shakeX { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-.choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.choice-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; flex: 1; }
 .choice-btn {
-  background: #fff; border: 1.5px solid rgba(42,39,35,0.14); border-radius: 12px; padding: 14px 10px;
+  background: #fff; border: 1.5px solid rgba(42,39,35,0.14); border-radius: 12px; padding: 14px 12px;
   font-size: 15px; font-weight: 600; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: border-color .12s ease, background .12s ease;
+  transition: border-color .12s ease, background .12s ease; text-align: center; line-height: 1.3;
 }
 .choice-btn:hover:not(:disabled) { border-color: var(--indigo); }
 .choice-btn:disabled { cursor: default; opacity: 1; }
@@ -1544,6 +1565,24 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .btn-primary:hover:not(:disabled) { background: var(--indigo-deep); }
 .btn-ghost { background: transparent; border: 1.5px solid rgba(42,39,35,0.18); border-radius: 10px; padding: 11px 20px; font-weight: 700; font-size: 14px; color: var(--ink); }
 .btn-ghost:hover { border-color: var(--indigo); color: var(--indigo); }
+
+@media (min-width: 481px) {
+  .home-header h1 { font-size: 48px; }
+  .home-tagline { font-size: 15px; }
+  .hanko-mark { width: 54px; height: 54px; }
+  .chip { padding: 13px 16px; }
+  .chip-jp { font-size: 14.5px; }
+  .chip-en { font-size: 11.5px; }
+  .mode-card { padding: 30px 20px; gap: 8px; }
+  .mode-title { font-size: 22px; }
+  .mode-desc { font-size: 13.5px; }
+  .mode-jp { font-size: 36px; }
+  .jp-display { font-size: 54px; }
+  .quiz-instruction { font-size: 13.5px; }
+  .choice-btn { padding: 20px 14px; font-size: 17px; }
+  .btn-primary, .btn-ghost { padding: 14px 24px; font-size: 15.5px; }
+  .setup-title, .category-config-label { font-size: 15px; }
+}
 
 @media (max-width: 480px) {
   body { background: #eae3cf; }
