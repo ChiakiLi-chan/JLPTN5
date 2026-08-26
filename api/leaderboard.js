@@ -87,7 +87,8 @@ export default async function handler(req, res) {
     const member = JSON.stringify({ name: safeName, date: Date.now(), score, total });
 
     try {
-      await redis.zAdd(key, { score: timeSeconds, value: member });
+      const rankingScore = (total - score) * 1000000 + timeSeconds;
+      await redis.zAdd(key, { score: rankingScore, value: member });
     console.log("SAVED TO REDIS:", key, member);
       // Keep only the fastest LEADERBOARD_MAX_ENTRIES — ranks beyond that
       // (the slower ones, since ascending order) get dropped.
