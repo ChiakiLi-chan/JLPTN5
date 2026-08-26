@@ -693,7 +693,12 @@ function QuizSetup({ pool, onBack, onStart }) {
           </div>
         )}
 
-        {nonKanjiCategories.length === 1 && !customizePerCategory && renderSlide({ key: nonKanjiCategories[0], isKanji: false })}
+        {nonKanjiCategories.length === 1 && !customizePerCategory && (
+          <div className="setup-group category-config">
+            <span className="category-config-label">{nonKanjiCategories[0]}</span>
+            <PromptAnswerFields cfg={sharedConfig} isKanji={false} onChange={(patch) => setSharedConfig((prev) => ({ ...prev, ...patch }))} />
+          </div>
+        )}
 
         <ConfigCarousel slides={slides} renderSlide={renderSlide} />
       </div>
