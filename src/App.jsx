@@ -1252,58 +1252,82 @@ function LeaderboardBrowser({ onBack }) {
         <span className="setup-title">Leaderboards</span>
       </div>
 
-      <div className="setup-body setup-body-scroll">
-        <div className="setup-group">
-          <span className="setup-label">Category</span>
-          <div className="category-rail category-rail-compact">
-            {LEADERBOARD_CATEGORY_OPTIONS.map((c) => (
-              <button key={c} className={`chip${category === c ? " chip-active" : ""}`} onClick={() => setCategory(c)}>
-                <span className="chip-jp">{c}</span>
-              </button>
-            ))}
+      <div className="setup-body setup-body-scroll lb-body">
+        <div className="lb-filters">
+          <div className="lb-filter-block">
+            <span className="lb-filter-label">Category</span>
+            <div className="option-row lb-compact-options">
+              {LEADERBOARD_CATEGORY_OPTIONS.map((c) => (
+                <button key={c} className={`option-btn${category === c ? " option-btn-active" : ""}`} onClick={() => setCategory(c)}>
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="lb-filter-row-pair">
+            <div className="lb-filter-block">
+              <span className="lb-filter-label">Questions</span>
+              <div className="option-row segmented lb-compact-options">
+                {QUESTION_COUNT_OPTIONS.map((n) => (
+                  <button key={n} className={`option-btn${count === n ? " option-btn-active" : ""}`} onClick={() => setCount(n)}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="lb-filter-block">
+              <span className="lb-filter-label">Mode</span>
+              <div className="option-row segmented lb-compact-options">
+                {LEADERBOARD_MODE_OPTIONS.map((m) => (
+                  <button key={m.key} className={`option-btn${mode === m.key ? " option-btn-active" : ""}`} onClick={() => setMode(m.key)}>
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="setup-group">
-          <span className="setup-label">Questions</span>
-          <div className="option-row segmented">
-            {QUESTION_COUNT_OPTIONS.map((n) => (
-              <button key={n} className={`option-btn${count === n ? " option-btn-active" : ""}`} onClick={() => setCount(n)}>
-                {n}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="setup-group">
-          <span className="setup-label">Mode</span>
-          <div className="option-row segmented">
-            {LEADERBOARD_MODE_OPTIONS.map((m) => (
-              <button key={m.key} className={`option-btn${mode === m.key ? " option-btn-active" : ""}`} onClick={() => setMode(m.key)}>
-                {m.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="leaderboard-panel">
-          <p className="missed-title">
-            {category} · {count}Q · {LEADERBOARD_MODE_OPTIONS.find((m) => m.key === mode).label}
+        <div className="leaderboard-panel lb-panel-main">
+          <p className="lb-panel-title">
+            {category} <span className="lb-panel-title-dim">· {count}Q · {LEADERBOARD_MODE_OPTIONS.find((m) => m.key === mode).label}</span>
           </p>
           {leaderboard === null ? (
             <p className="setup-hint setup-hint-dim">Loading…</p>
           ) : leaderboard.length === 0 ? (
             <p className="setup-hint setup-hint-dim">No entries yet — play this combination to set the first time.</p>
           ) : (
-            <div className="leaderboard-list">
-              {leaderboard.map((e, i) => (
-                <div className="leaderboard-row" key={i}>
-                  <span className="leaderboard-rank">{i + 1}</span>
-                  <span className="leaderboard-name">{e.name}</span>
-                  <span className="leaderboard-time">{formatTime(e.timeSeconds)}</span>
-                </div>
-              ))}
-            </div>
+            <>
+              <div className="lb-podium">
+                {[1, 0, 2].map((idx) => {
+                  const e = leaderboard[idx];
+                  const rank = idx + 1;
+                  return e ? (
+                    <div key={idx} className={`lb-podium-card lb-podium-rank-${rank}`}>
+                      <div className="lb-podium-medal">{rank}</div>
+                      <div className="lb-podium-avatar">{e.name.slice(0, 2).toUpperCase()}</div>
+                      <div className="lb-podium-name">{e.name}</div>
+                      <div className="lb-podium-time">{formatTime(e.timeSeconds)}</div>
+                    </div>
+                  ) : (
+                    <div key={idx} className="lb-podium-card lb-podium-empty" />
+                  );
+                })}
+              </div>
+
+              <div className="leaderboard-list">
+                {leaderboard.map((e, i) => (
+                  <div className={`leaderboard-row${i < 3 ? ` leaderboard-row-top leaderboard-top-${i + 1}` : ""}`} key={i}>
+                    <span className="leaderboard-rank">{i + 1}</span>
+                    <span className="leaderboard-avatar">{e.name.slice(0, 2).toUpperCase()}</span>
+                    <span className="leaderboard-name">{e.name}</span>
+                    <span className="leaderboard-time">{formatTime(e.timeSeconds)}</span>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -1483,15 +1507,14 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
   color: var(--indigo); font-weight: 700; font-size: 12.5px; margin-top: 14px; padding: 6px;
 }
 .leaderboard-link:hover { color: var(--indigo-deep); text-decoration: underline; }
-.category-rail-compact { max-height: 110px; }
 
 /* ---------- Setup screen ---------- */
 .setup-title { flex: 1; font-weight: 800; font-size: 14px; color: var(--indigo-deep); }
-.setup-body { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+.setup-body { display: flex; flex-direction: column; gap: 16px; }
 .setup-body-scroll { overflow-y: auto; max-height: 440px; padding-right: 2px; }
 .setup-group { display: flex; flex-direction: column; gap: 8px; }
-.category-config { background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.1); border-radius: 12px; padding: 14px; gap: 10px; }
-.category-config-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; font-weight: 700; color: var(--indigo-deep); }
+.category-config { background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.1); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.category-config-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; font-weight: 700; color: var(--indigo-deep); padding-bottom: 8px; border-bottom: 1px solid rgba(42,39,35,0.12); }
 .category-config-header {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   background: none; border: none; padding: 0; width: 100%; text-align: left;
@@ -1544,7 +1567,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
   background: rgba(207,154,44,0.14); border: 1px solid rgba(207,154,44,0.4); border-radius: 10px;
   padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--ink);
 }
-.setup-start { width: 100%; justify-content: center; margin-top: 8px; }
+.setup-start { width: 100%; justify-content: center; margin-top: auto; }
 
 /* ---------- Quiz / Match top bar ---------- */
 .quiz-topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
@@ -1626,6 +1649,43 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .results-time { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
 
 .leaderboard-panel { width: 100%; max-width: 340px; margin-top: 18px; background: var(--paper-deep); border-radius: 12px; padding: 12px 16px; }
+.lb-filters { display: flex; flex-direction: column; gap: 12px; }
+.lb-filter-block { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+.lb-filter-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.lb-filter-row-pair { display: flex; gap: 12px; }
+.lb-compact-options.option-row { gap: 5px; }
+.lb-compact-options .option-btn { padding: 6px 9px; font-size: 11.5px; }
+.lb-compact-options.segmented { padding: 2px; }
+
+.lb-podium { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 16px; }
+.lb-podium-card {
+  flex: 1; min-width: 0; background: #fff; border: 1.5px solid rgba(42,39,35,0.1); border-radius: 14px;
+  padding: 14px 6px 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+}
+.lb-podium-empty { background: transparent; border: none; }
+.lb-podium-rank-1 { padding-top: 6px; box-shadow: 0 10px 22px rgba(207,154,44,0.3); border-color: var(--gold); }
+.lb-podium-medal { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #fff; background: var(--ink-soft); }
+.lb-podium-rank-1 .lb-podium-medal { background: var(--gold); width: 28px; height: 28px; font-size: 12px; }
+.lb-podium-rank-2 .lb-podium-medal { background: #a8a8a0; }
+.lb-podium-rank-3 .lb-podium-medal { background: #b8804a; }
+.lb-podium-avatar {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--indigo); color: #fff; font-size: 12px; font-weight: 800;
+}
+.lb-podium-rank-1 .lb-podium-avatar { width: 42px; height: 42px; font-size: 13px; }
+.lb-podium-name { font-size: 12px; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.lb-podium-time {
+  font-size: 11px; font-weight: 800; color: var(--indigo-deep); background: var(--paper-deep);
+  padding: 3px 10px; border-radius: 999px; font-variant-numeric: tabular-nums;
+}
+
+.lb-panel-main {
+  max-width: none; flex: 1; margin-top: 16px; background: #fff; border: 1px solid rgba(42,39,35,0.1);
+  border-radius: 16px; padding: 20px 18px; box-shadow: 0 8px 22px rgba(42,39,35,0.09);
+  display: flex; flex-direction: column;
+}
+.lb-panel-title { font-size: 15px; font-weight: 800; color: var(--indigo-deep); margin: 0 0 14px; }
+.lb-panel-title-dim { font-size: 12px; font-weight: 600; color: var(--ink-soft); text-transform: none; letter-spacing: 0; }
 .name-entry { background: rgba(207,154,44,0.14); border: 1px solid rgba(207,154,44,0.4); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
 .name-entry-row { display: flex; gap: 8px; margin-top: 6px; }
 .name-input {
@@ -1635,12 +1695,29 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .name-input:focus { outline: 2px solid var(--indigo); outline-offset: 1px; }
 .name-submit { padding: 8px 16px; font-size: 13px; }
 .submit-error { color: var(--hanko); margin-top: 6px; }
-.leaderboard-list { display: flex; flex-direction: column; gap: 2px; }
+.leaderboard-list { display: flex; flex-direction: column; }
 .leaderboard-row { display: grid; grid-template-columns: 22px 1fr auto; gap: 8px; align-items: center; padding: 6px 4px; border-radius: 6px; font-size: 13.5px; }
+.lb-panel-main .leaderboard-row { grid-template-columns: 26px 32px 1fr auto; gap: 10px; padding: 10px 6px; font-size: 15px; border-bottom: 1px solid rgba(42,39,35,0.08); border-radius: 0; }
+.lb-panel-main .leaderboard-row:last-child { border-bottom: none; }
 .leaderboard-row-new { background: rgba(76,122,74,0.16); font-weight: 700; }
 .leaderboard-rank { color: var(--ink-soft); font-weight: 800; font-size: 12px; }
+.lb-panel-main .leaderboard-rank { font-size: 15px; text-align: center; }
+.leaderboard-avatar {
+  display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--indigo); color: #fff; font-size: 11px; font-weight: 800; flex-shrink: 0;
+}
+.leaderboard-top-1 .leaderboard-avatar { background: var(--gold); }
+.leaderboard-top-2 .leaderboard-avatar { background: #a8a8a0; }
+.leaderboard-top-3 .leaderboard-avatar { background: #b8804a; }
+.leaderboard-top-1 .leaderboard-rank { color: var(--gold); }
+.leaderboard-top-2 .leaderboard-rank { color: #a8a8a0; }
+.leaderboard-top-3 .leaderboard-rank { color: #b8804a; }
+.leaderboard-row-top .leaderboard-name { font-weight: 800; color: var(--indigo-deep); }
 .leaderboard-name { font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .leaderboard-time { font-variant-numeric: tabular-nums; color: var(--indigo-deep); font-weight: 700; }
+.lb-panel-main .leaderboard-time {
+  font-size: 13px; background: var(--paper-deep); padding: 5px 12px; border-radius: 999px; white-space: nowrap;
+}
 
 .match-summary { display: flex; gap: 28px; margin: 8px 0 22px; }
 .match-summary > div { display: flex; flex-direction: column; align-items: center; }
@@ -1654,6 +1731,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .btn-ghost:hover { border-color: var(--indigo); color: var(--indigo); }
 
 @media (min-width: 481px) {
+  .setup-body-scroll { max-height: none; overflow: visible; padding-right: 0; }
   .home-header h1 { font-size: 48px; }
   .home-tagline { font-size: 15px; }
   .hanko-mark { width: 54px; height: 54px; }
