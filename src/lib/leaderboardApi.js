@@ -27,9 +27,11 @@ export async function loadLeaderboard(category, count, mode) {
   }
 }
 
-// Returns the updated top-10 list on success, or null on failure (network
-// error, or the server rejected it — e.g. a race where someone else's
-// submission pushed this one back out of qualifying range in the meantime).
+/* Returns { entries } on success, or { error } with a message worth showing
+   the player. Failure isn't always a network problem — the server also
+   rejects submissions that are rate-limited (429), or that lost a race
+   where someone else's score pushed this one out of qualifying range — so
+   the reason gets passed back rather than collapsed into a null. */
 export async function submitScore(category, count, mode, entry) {
   try {
     const res = await fetch("/api/leaderboard", {
@@ -37,11 +39,28 @@ export async function submitScore(category, count, mode, entry) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category, count, mode, ...entry }),
     });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return Array.isArray(data.entries) ? data.entries : null;
+
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      // Non-JSON response (a gateway error page, say) — fall through.
+    }
+
+    if (res.ok && Array.isArray(data?.entries)) return { entries: data.entries };
+
+    if (res.status === 429) {
+      const mins = Math.ceil((Number(data?.retryAfter) || 0) / 60);
+      return {
+        error: mins > 0
+          ? `Too many submissions from here — try again in about ${mins} minute${mins === 1 ? "" : "s"}.`
+          : "Too many submissions from here — please try again later.",
+      };
+    }
+    if (data?.error) return { error: data.error };
+    return { error: "Couldn't save your score — check your connection and try again." };
   } catch (e) {
-    return null;
+    return { error: "Couldn't save your score — check your connection and try again." };
   }
 }
 

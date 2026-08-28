@@ -95,6 +95,53 @@ To replace the whole set:
 - Names are free text, capped at 24 characters, defaulting to "Anonymous"
   if left blank.
 
+## Abuse protection
+
+`/api/leaderboard` is a public endpoint with no authentication, so anyone who
+watches the network tab can replay a submission from curl. There's no private
+data to leak, but an unthrottled endpoint could burn the free-tier quota
+(Upstash allows 500K commands/month; a submission costs 3) and leave the
+leaderboard dead for the rest of the month. Two layers guard against that:
+
+- **Per-IP limits** — 20 submissions and 300 reads per hour, in
+  `shared/leaderboardRules.js`. Far above real use: a 10-question run takes
+  ~30 seconds, so nobody legitimately produces 20 scores in an hour.
+- **A global daily write budget** — 5,000 writes/day, the backstop for a
+  distributed flood or a spoofed address header. Reads keep working even
+  when it's spent, so the app degrades to read-only rather than breaking.
+
+Reads fail **open** (if the limiter itself errors, serve the board anyway);
+writes fail **closed** (if we can't verify the limit, don't write). Blocked
+callers get a 429 with `Retry-After`, and the results screen shows how long
+to wait.
+
+The caller's address comes from `x-real-ip`, falling back to the *rightmost*
+`x-forwarded-for` entry. The leftmost entry is client-supplied and would let
+anyone mint a fresh identity per request just by setting a header.
+
+**What this does not do:** stop cheating. Someone can still submit a
+fabricated perfect run, just 20 times an hour instead of thousands. Closing
+that needs signed session tokens — the server issues a token at quiz start
+and verifies the elapsed time on submit. Worth doing only if people actually
+start gaming it.
+
+There's also no admin path for deleting a poisoned board; you'd remove the
+key (`leaderboard:{category}:{count}:{mode}`) in the Upstash console.
+
+## Tests
+
+Neither is wired to a test runner — they're standalone scripts.
+
+```bash
+# Frontend: renders every screen, exercises the quiz engine over all 608 items
+npx esbuild smoke.test.jsx --bundle --platform=node --format=cjs \
+  --loader:.json=json --jsx=automatic --outfile=smoke.cjs && node smoke.cjs
+
+# API: runs the real handler against a local Redis
+redis-server --daemonize yes --port 6379 --save ''
+REDIS_URL=redis://127.0.0.1:6379 node api.test.mjs
+```
+
 ## Project structure
 
 Layered so that each direction of dependency only ever points one way:
@@ -135,6 +182,7 @@ src/
 api/leaderboard.js           serverless function: GET reads a board, POST submits
 shared/leaderboardRules.js   constants/helpers shared by the client AND the API,
                              so the qualification rule can't drift between them
+shared/rateLimit.js          per-IP limits and the global write budget (server-only)
 ```
 
 `shared/` sits outside `src/` on purpose: `api/leaderboard.js` imports from it
@@ -149,5 +197,6 @@ both sides.
 | What a question asks, or how distractors are chosen | `src/lib/quizEngine.js` |
 | Time-attack seconds per question | `TIME_LIMITS` in `src/lib/quizEngine.js` |
 | Leaderboard qualification rules | `shared/leaderboardRules.js` (client + server both read it) |
+| Rate limit thresholds | `RATE_LIMIT_SUBMIT` / `RATE_LIMIT_READ` / `GLOBAL_DAILY_WRITE_BUDGET` in `shared/leaderboardRules.js` |
 | Any single screen's markup | that screen's file in `src/components/` |
 | Colors, spacing, fonts | `src/styles/base.css` |

@@ -100,19 +100,19 @@ export default function QuizResults({ result, onRetry, onHome }) {
     const trimmed = name.trim().slice(0, 24) || "Anonymous";
     setSubmitting(true);
     setSubmitError(null);
-    const updated = await submitScore(result.categoryKey, result.count, result.mode, {
+    const { entries, error } = await submitScore(result.categoryKey, result.count, result.mode, {
       name: trimmed,
       timeSeconds: result.timeSeconds,
       score: result.score,
       total: result.total,
     });
     setSubmitting(false);
-    if (updated) {
-      setLeaderboard(updated);
+    if (entries) {
+      setLeaderboard(entries);
       setSubmitted(true);
       setSubmittedInfo({ name: trimmed, timeSeconds: result.timeSeconds });
     } else {
-      setSubmitError("Couldn't save your score — check your connection and try again.");
+      setSubmitError(error);
     }
   };
 

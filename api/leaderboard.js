@@ -5,17 +5,46 @@ import {
   meetsAccuracyBar,
   isValidLeaderboardFilters,
   isPlausibleTime,
+  RATE_LIMIT_SUBMIT,
+  RATE_LIMIT_READ,
+  GLOBAL_DAILY_WRITE_BUDGET,
 } from "../shared/leaderboardRules.js";
+import { clientIp, hitLimit, withinGlobalWriteBudget } from "../shared/rateLimit.js";
 
 // Vercel's own KV product is deprecated in favor of Redis integrations from
 // the Marketplace (Upstash and others), which land under either naming
 // convention depending on how/when the integration was added. Support both
 // so this doesn't silently break based on which one your project has.
-const redis = createClient({
-  url: process.env.REDIS_URL,
-});
 
-await redis.connect();
+/* One connection per warm serverless instance, established lazily and
+   reused. Connecting at module top-level instead would mean that if the
+   socket ever dropped, that instance served errors until it recycled —
+   here a dead client is discarded and replaced on the next request.
+
+   The 'error' listener is not optional: without it, node-redis emits an
+   unhandled 'error' event on a dropped socket, which takes down the
+   whole function instance. */
+let clientPromise = null;
+
+async function getRedis(attempt = 0) {
+  if (!clientPromise) {
+    const client = createClient({ url: process.env.REDIS_URL });
+    client.on("error", (err) => {
+      console.error("redis client error", err?.message || err);
+    });
+    clientPromise = client.connect().catch((err) => {
+      clientPromise = null; // let the next request retry rather than caching a failure
+      throw err;
+    });
+  }
+
+  const client = await clientPromise;
+  if (!client.isOpen && attempt < 1) {
+    clientPromise = null;
+    return getRedis(attempt + 1);
+  }
+  return client;
+}
 
 // Redis sorted sets are a natural fit here: score = timeSeconds (lower is
 // better), member = JSON blob with the display fields. ZRANGE with no
@@ -51,8 +80,41 @@ function parseZRangeResult(raw) {
   return entries;
 }
 
+/* Sends a 429 with the headers a well-behaved client (or a browser
+   devtools tab) can actually act on. */
+function tooManyRequests(res, retryAfter, message) {
+  res.setHeader("Retry-After", String(Math.max(1, retryAfter)));
+  return res.status(429).json({ error: message, retryAfter });
+}
+
 export default async function handler(req, res) {
+  if (req.method !== "GET" && req.method !== "POST") {
+    res.setHeader("Allow", ["GET", "POST"]);
+    return res.status(405).json({ error: `Method ${req.method} not allowed` });
+  }
+
+  let redis;
+  try {
+    redis = await getRedis();
+  } catch (err) {
+    console.error("redis connect failed", err?.message || err);
+    return res.status(503).json({ error: "Leaderboard is temporarily unavailable" });
+  }
+
+  const ip = clientIp(req);
+
   if (req.method === "GET") {
+    // Reads fail OPEN: if the limiter itself breaks, showing a leaderboard
+    // is better than a dead screen, and reads can't corrupt anything.
+    try {
+      const gate = await hitLimit(redis, `ratelimit:read:${ip}`, RATE_LIMIT_READ.limit, RATE_LIMIT_READ.windowSeconds);
+      if (!gate.allowed) {
+        return tooManyRequests(res, gate.retryAfter, "Too many leaderboard requests — please slow down");
+      }
+    } catch (err) {
+      console.error("read rate limit check failed, allowing request", err?.message || err);
+    }
+
     const { category, count, mode } = req.query;
     if (!category || !count || !mode) {
       return res.status(400).json({ error: "Missing category, count, or mode" });
@@ -71,6 +133,23 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
+    // Writes fail CLOSED: if we can't confirm this caller is within their
+    // limit, we don't write. Protecting the quota matters more than
+    // accepting one score, and a rejected submission is recoverable.
+    try {
+      const gate = await hitLimit(redis, `ratelimit:submit:${ip}`, RATE_LIMIT_SUBMIT.limit, RATE_LIMIT_SUBMIT.windowSeconds);
+      if (!gate.allowed) {
+        return tooManyRequests(res, gate.retryAfter, "Too many score submissions — please try again later");
+      }
+      if (!(await withinGlobalWriteBudget(redis, GLOBAL_DAILY_WRITE_BUDGET))) {
+        console.warn("global daily write budget exhausted");
+        return tooManyRequests(res, 3600, "The leaderboard is busy right now — please try again later");
+      }
+    } catch (err) {
+      console.error("submit rate limit check failed, rejecting", err?.message || err);
+      return res.status(503).json({ error: "Leaderboard is temporarily unavailable" });
+    }
+
     const { category, count, mode, name, timeSeconds, score, total } = req.body || {};
 
     if (
@@ -118,6 +197,7 @@ export default async function handler(req, res) {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST"]);
-  return res.status(405).json({ error: `Method ${req.method} not allowed` });
+  // Unreachable: the method check at the top already returned for anything
+  // other than GET or POST.
+  return res.status(500).json({ error: "Unhandled request" });
 }
