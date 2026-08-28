@@ -1041,6 +1041,7 @@ function QuizResults({ result, onRetry, onHome }) {
                   >
                     <span className="leaderboard-rank">{i + 1}</span>
                     <span className="leaderboard-name">{e.name}</span>
+                    <span className="leaderboard-score">{e.score}/{e.total}</span>
                     <span className="leaderboard-time">{formatTime(e.timeSeconds)}</span>
                   </div>
                 ))}
@@ -1311,6 +1312,7 @@ function LeaderboardBrowser({ onBack }) {
                     <span className="leaderboard-rank">{i + 1}</span>
                     <span className="leaderboard-avatar">{e.name.slice(0, 2).toUpperCase()}</span>
                     <span className="leaderboard-name">{e.name}</span>
+                    <span className="leaderboard-score">{e.score}/{e.total}</span>
                     <span className="leaderboard-time">{formatTime(e.timeSeconds)}</span>
                   </div>
                 ))}
@@ -1684,8 +1686,8 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .name-submit { padding: 8px 16px; font-size: 13px; }
 .submit-error { color: var(--hanko); margin-top: 6px; }
 .leaderboard-list { display: flex; flex-direction: column; }
-.leaderboard-row { display: grid; grid-template-columns: 22px 1fr auto; gap: 8px; align-items: center; padding: 6px 4px; border-radius: 6px; font-size: 13.5px; }
-.lb-panel-main .leaderboard-row { grid-template-columns: 26px 32px 1fr auto; gap: 10px; padding: 10px 6px; font-size: 15px; border-bottom: 1px solid rgba(42,39,35,0.08); border-radius: 0; }
+.leaderboard-row { display: grid; grid-template-columns: 22px 1fr auto auto; gap: 8px; align-items: center; padding: 6px 4px; border-radius: 6px; font-size: 13.5px; }
+.lb-panel-main .leaderboard-row { grid-template-columns: 26px 32px 1fr auto auto; gap: 10px; padding: 10px 6px; font-size: 15px; border-bottom: 1px solid rgba(42,39,35,0.08); border-radius: 0; }
 .lb-panel-main .leaderboard-row:last-child { border-bottom: none; }
 .leaderboard-row-new { background: rgba(76,122,74,0.16); font-weight: 700; }
 .leaderboard-rank { color: var(--ink-soft); font-weight: 800; font-size: 12px; }
@@ -1702,6 +1704,8 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .leaderboard-top-3 .leaderboard-rank { color: #b8804a; }
 .leaderboard-row-top .leaderboard-name { font-weight: 800; color: var(--indigo-deep); }
 .leaderboard-name { font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.leaderboard-score { font-size: 11.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lb-panel-main .leaderboard-score { font-size: 13px; }
 .leaderboard-time { font-variant-numeric: tabular-nums; color: var(--indigo-deep); font-weight: 700; }
 .lb-panel-main .leaderboard-time {
   font-size: 13px; background: var(--paper-deep); padding: 5px 12px; border-radius: 999px; white-space: nowrap;
