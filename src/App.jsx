@@ -63,7 +63,14 @@ function shuffle(arr) {
    Kanji entries have answerType + includeOnyomi/includeKunyomi (no promptType — always jp).
    Every other configurable category has promptType + answerType. */
 function resolveQuestion(item, perCategoryConfig) {
-  if (KANA_ONLY_CATEGORIES.has(item.category) || !item.meaning) {
+  if (KANA_ONLY_CATEGORIES.has(item.category)) {
+    const cfg = perCategoryConfig[item.category] || { promptType: "kana" };
+    const effective = cfg.promptType === "mixed" ? (Math.random() < 0.5 ? "kana" : "romaji") : cfg.promptType;
+    return effective === "romaji"
+      ? { item, promptField: "reading", answerField: "jp" }
+      : { item, promptField: "jp", answerField: "reading" };
+  }
+  if (!item.meaning) {
     return { item, promptField: "jp", answerField: "reading" };
   }
 
@@ -509,7 +516,33 @@ function summarizeConfig(cat, cfg) {
   return `${promptLabel} → ${answerLabel}`;
 }
 
-function PromptAnswerFields({ cfg, isKanji, onChange }) {
+function PromptAnswerFields({ cfg, isKanji, isKanaOnly, onChange }) {
+  if (isKanaOnly) {
+    return (
+      <>
+        <span className="setup-sublabel">Prompt type</span>
+        <div className="option-row segmented">
+          <button className={`option-btn${cfg.promptType === "kana" ? " option-btn-active" : ""}`} onClick={() => onChange({ promptType: "kana" })}>
+            Kana
+          </button>
+          <button className={`option-btn${cfg.promptType === "romaji" ? " option-btn-active" : ""}`} onClick={() => onChange({ promptType: "romaji" })}>
+            Romaji
+          </button>
+          <button className={`option-btn${cfg.promptType === "mixed" ? " option-btn-active" : ""}`} onClick={() => onChange({ promptType: "mixed" })}>
+            Mixed
+          </button>
+        </div>
+        <p className="setup-hint setup-hint-dim">
+          {cfg.promptType === "romaji"
+            ? "You'll see the romaji and pick the matching kana."
+            : cfg.promptType === "mixed"
+            ? "Randomly asks either direction each question."
+            : "You'll see the kana and pick the matching romaji."}
+        </p>
+      </>
+    );
+  }
+
   return (
     <>
       {!isKanji && (
@@ -583,16 +616,20 @@ function QuizSetup({ pool, onBack, onStart }) {
   const mode = timeAttackOn ? difficulty : "normal";
   const timeLimitSeconds = mode === "easy" ? 10 : mode === "hard" ? 5 : null;
 
-  const kanaOnlyCount = pool.filter((i) => KANA_ONLY_CATEGORIES.has(i.category) || !i.meaning).length;
 
   const nonKanjiCategories = useMemo(
     () => CATEGORY_ORDER.filter((c) => c !== "Kanji" && !KANA_ONLY_CATEGORIES.has(c) && pool.some((i) => i.category === c)),
+    [pool]
+  );
+  const kanaOnlyPresent = useMemo(
+    () => CATEGORY_ORDER.filter((c) => KANA_ONLY_CATEGORIES.has(c) && pool.some((i) => i.category === c)),
     [pool]
   );
   const kanjiPresent = pool.some((i) => i.category === "Kanji");
 
   const defaultOtherConfig = () => ({ promptType: "kanji", answerType: "meaning" });
   const defaultKanjiConfig = () => ({ answerType: "meaning", includeOnyomi: true, includeKunyomi: true });
+  const defaultKanaConfig = () => ({ promptType: "kana" });
 
   // "Same for all" is the default: one shared config applied to every non-Kanji
   // category. Flip the switch to swipe through each one individually.
@@ -606,6 +643,7 @@ function QuizSetup({ pool, onBack, onStart }) {
     return map;
   });
   const [kanjiConfig, setKanjiConfig] = useState(defaultKanjiConfig);
+  const [kanaConfig, setKanaConfig] = useState(defaultKanaConfig);
 
   const needsOverflowChoice = pool.length < count;
 
@@ -622,6 +660,9 @@ function QuizSetup({ pool, onBack, onStart }) {
       finalConfig[cat] = customizePerCategory ? perCategoryConfig[cat] || defaultOtherConfig() : sharedConfig;
     });
     if (kanjiPresent) finalConfig["Kanji"] = kanjiConfig;
+    kanaOnlyPresent.forEach((cat) => {
+      finalConfig[cat] = kanaConfig;
+    });
     onStart({ pool, count, overflowChoice, perCategoryConfig: finalConfig, mode, timeLimitSeconds });
   };
 
@@ -719,10 +760,11 @@ function QuizSetup({ pool, onBack, onStart }) {
           )}
         </div>
 
-        {kanaOnlyCount > 0 && (
-          <p className="setup-hint setup-hint-dim setup-kana-note">
-            {kanaOnlyCount} kana-only term{kanaOnlyCount === 1 ? "" : "s"} in your selection always test Kana → Romaji — no settings needed for those.
-          </p>
+        {kanaOnlyPresent.length > 0 && (
+          <div className="setup-group category-config">
+            <span className="category-config-label">{kanaOnlyPresent.join(", ")}</span>
+            <PromptAnswerFields cfg={kanaConfig} isKanaOnly onChange={(patch) => setKanaConfig((prev) => ({ ...prev, ...patch }))} />
+          </div>
         )}
 
         {nonKanjiCategories.length >= 2 && (
@@ -1491,7 +1533,6 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .chevron { transition: transform 0.18s ease; color: var(--ink-soft); }
 .chevron-open { transform: rotate(180deg); }
 .setup-sublabel { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: var(--ink-soft); margin-top: 4px; }
-.setup-kana-note { background: rgba(42,39,35,0.06); border-radius: 8px; padding: 8px 10px; }
 
 .carousel-wrap { display: flex; flex-direction: column; gap: 8px; }
 .carousel-nav { display: flex; align-items: center; justify-content: center; gap: 12px; }
@@ -1591,7 +1632,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .quiz-footer { margin-top: auto; text-align: center; font-size: 12px; color: var(--ink-soft); padding-top: 14px; }
 
 /* ---------- Flashcard ---------- */
-.flash-card { background: transparent; border: none; padding: 0; display: block; width: 100%; flex: 1; min-height: 550px; perspective: 1200px; margin-bottom: 14px; }
+.flash-card { background: transparent; border: none; padding: 0; display: block; width: 100%; flex: 1; min-height: 360px; perspective: 1200px; margin-bottom: 14px; }
 .flash-card-inner { display: block; width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(.3,.8,.4,1); }
 .is-flipped .flash-card-inner { transform: rotateY(180deg); }
 .flash-face {
