@@ -88,15 +88,14 @@ function resolveQuestion(item, perCategoryConfig) {
     return { item, promptField: "jp", answerField: readingKind, kanjiMixedTrap: kanjiReadingType === "mixed" };
   }
 
-  const effectivePrompt = cfg.promptType === "mixed" ? (Math.random() < 0.5 ? "kanji" : "romaji") : cfg.promptType;
+  const PROMPT_MIXED_POOL = ["kanji", "kana", "romaji"];
+  const effectivePrompt = cfg.promptType === "mixed" ? PROMPT_MIXED_POOL[Math.floor(Math.random() * 3)] : cfg.promptType;
   if (effectivePrompt === "romaji") {
     return { item, promptField: "reading", answerField: "meaning" };
   }
+  const promptField = effectivePrompt === "kana" ? "kana" : "jp";
   const effectiveAnswer = cfg.answerType === "mixed" ? (Math.random() < 0.5 ? "romaji" : "meaning") : cfg.answerType;
-  if (effectiveAnswer === "meaning") {
-    return { item, promptField: "jp", answerField: "meaning" };
-  }
-  return { item, promptField: "jp", answerField: "reading" };
+  return { item, promptField, answerField: effectiveAnswer === "meaning" ? "meaning" : "reading" };
 }
 
 /* Same-kanji trap: when the Kanji reading-type setting is "Mixed", there's a
@@ -550,7 +549,10 @@ function PromptAnswerFields({ cfg, isKanji, isKanaOnly, onChange }) {
           <span className="setup-sublabel">Prompt type</span>
           <div className="option-row segmented">
             <button className={`option-btn${cfg.promptType === "kanji" ? " option-btn-active" : ""}`} onClick={() => onChange({ promptType: "kanji" })}>
-              Kanji / Kana
+              Kanji
+            </button>
+            <button className={`option-btn${cfg.promptType === "kana" ? " option-btn-active" : ""}`} onClick={() => onChange({ promptType: "kana" })}>
+              Kana
             </button>
             <button className={`option-btn${cfg.promptType === "romaji" ? " option-btn-active" : ""}`} onClick={() => onChange({ promptType: "romaji" })}>
               Romaji
@@ -640,12 +642,10 @@ function QuizSetup({ pool, onBack, onStart }) {
     nonKanjiCategories.forEach((c) => {
       map[c] = defaultOtherConfig();
     });
-    kanaOnlyPresent.forEach((c) => {
-      map[c] = defaultKanaConfig();
-    });
     return map;
   });
   const [kanjiConfig, setKanjiConfig] = useState(defaultKanjiConfig);
+  const [kanaConfig, setKanaConfig] = useState(defaultKanaConfig);
 
   const needsOverflowChoice = pool.length < count;
 
@@ -661,28 +661,24 @@ function QuizSetup({ pool, onBack, onStart }) {
     nonKanjiCategories.forEach((cat) => {
       finalConfig[cat] = customizePerCategory ? perCategoryConfig[cat] || defaultOtherConfig() : sharedConfig;
     });
-    kanaOnlyPresent.forEach((cat) => {
-      finalConfig[cat] = perCategoryConfig[cat] || defaultKanaConfig();
-    });
     if (kanjiPresent) finalConfig["Kanji"] = kanjiConfig;
+    kanaOnlyPresent.forEach((cat) => {
+      finalConfig[cat] = kanaConfig;
+    });
     onStart({ pool, count, overflowChoice, perCategoryConfig: finalConfig, mode, timeLimitSeconds });
   };
 
   // Slides for the swipeable carousel: each non-Kanji category (only when
-  // "Customize each" is on), plus Hiragana/Katakana and Kanji — those three
-  // always get their own slide since they don't share the meaning-based
-  // config shape the other categories use.
+  // "Customize each" is on) plus Kanji (always its own slide, if present).
   const slides = [];
   if (customizePerCategory) {
     nonKanjiCategories.forEach((cat) => slides.push({ key: cat, isKanji: false }));
   }
-  kanaOnlyPresent.forEach((cat) => slides.push({ key: cat, isKanaOnly: true }));
   if (kanjiPresent) slides.push({ key: "Kanji", isKanji: true });
 
   const renderSlide = (s) => {
     const isKanji = s.isKanji;
-    const isKanaOnly = s.isKanaOnly;
-    const cfg = isKanji ? kanjiConfig : perCategoryConfig[s.key] || (isKanaOnly ? defaultKanaConfig() : defaultOtherConfig());
+    const cfg = isKanji ? kanjiConfig : perCategoryConfig[s.key] || defaultOtherConfig();
     const onChange = isKanji
       ? (patch) => setKanjiConfig((prev) => ({ ...prev, ...patch }))
       : (patch) => setPerCategoryConfig((prev) => ({ ...prev, [s.key]: { ...prev[s.key], ...patch } }));
@@ -692,7 +688,7 @@ function QuizSetup({ pool, onBack, onStart }) {
         <span className="category-config-label">
           {s.key} <span className="setup-hint-dim">({itemCount})</span>
         </span>
-        <PromptAnswerFields cfg={cfg} isKanji={isKanji} isKanaOnly={isKanaOnly} onChange={onChange} />
+        <PromptAnswerFields cfg={cfg} isKanji={isKanji} onChange={onChange} />
       </div>
     );
   };
@@ -765,6 +761,13 @@ function QuizSetup({ pool, onBack, onStart }) {
             </>
           )}
         </div>
+
+        {kanaOnlyPresent.length > 0 && (
+          <div className="setup-group category-config">
+            <span className="category-config-label">{kanaOnlyPresent.join(", ")}</span>
+            <PromptAnswerFields cfg={kanaConfig} isKanaOnly onChange={(patch) => setKanaConfig((prev) => ({ ...prev, ...patch }))} />
+          </div>
+        )}
 
         {nonKanjiCategories.length >= 2 && (
           <div className="setup-group">
@@ -886,7 +889,7 @@ function Quiz({ config, showFurigana, onExit, onFinish }) {
 
   if (!q) return null;
 
-  const FIELD_LABELS = { jp: "Kanji / Kana", reading: "Romaji", meaning: "Meaning", onyomi: "Onyomi", kunyomi: "Kunyomi" };
+  const FIELD_LABELS = { jp: "Kanji / Kana", kana: "Kana", reading: "Romaji", meaning: "Meaning", onyomi: "Onyomi", kunyomi: "Kunyomi" };
   const promptLabel = FIELD_LABELS[q.promptField] || q.promptField;
   const answerLabel = FIELD_LABELS[q.answerField] || q.answerField;
   const promptIsPlainText = q.promptField !== "jp";
@@ -913,7 +916,13 @@ function Quiz({ config, showFurigana, onExit, onFinish }) {
         )}
         <span className="quiz-instruction">{promptLabel} → {answerLabel}</span>
         <div className={`jp-display${promptIsPlainText ? " romaji-display" : ""}`}>
-          {q.promptField === "jp" ? <JpText item={q.item} showFurigana={showFurigana} /> : q.item[q.promptField]}
+          {q.promptField === "jp" ? (
+            <JpText item={q.item} showFurigana={showFurigana} />
+          ) : q.promptField === "kana" ? (
+            q.item.kana || q.item.jp
+          ) : (
+            q.item[q.promptField]
+          )}
         </div>
 
         {feedback && (
@@ -1029,7 +1038,9 @@ function QuizResults({ result, onRetry, onHome }) {
           <p className="missed-title">Review</p>
           {result.missed.map((m, i) => (
             <div className="missed-row" key={i}>
-              <span className="missed-jp">{m.promptField === "jp" ? m.item.jp : m.item[m.promptField]}</span>
+              <span className="missed-jp">
+                {m.promptField === "jp" ? m.item.jp : m.promptField === "kana" ? m.item.kana || m.item.jp : m.item[m.promptField]}
+              </span>
               <span className="missed-answer">{m.item[m.answerField]}</span>
             </div>
           ))}
