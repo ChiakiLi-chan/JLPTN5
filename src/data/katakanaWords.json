@@ -1,0 +1,368 @@
+[
+  {
+    "jp": "アパート",
+    "kana": null,
+    "reading": "apaato",
+    "meaning": "apartment"
+  },
+  {
+    "jp": "バス",
+    "kana": null,
+    "reading": "basu",
+    "meaning": "bus"
+  },
+  {
+    "jp": "バター",
+    "kana": null,
+    "reading": "bataa",
+    "meaning": "butter"
+  },
+  {
+    "jp": "ベッド",
+    "kana": null,
+    "reading": "beddo",
+    "meaning": "bed"
+  },
+  {
+    "jp": "ボールペン",
+    "kana": null,
+    "reading": "boorupen",
+    "meaning": "ball-point pen"
+  },
+  {
+    "jp": "ボタン",
+    "kana": null,
+    "reading": "botan",
+    "meaning": "button"
+  },
+  {
+    "jp": "デパート",
+    "kana": null,
+    "reading": "depaato",
+    "meaning": "department store"
+  },
+  {
+    "jp": "ドア",
+    "kana": null,
+    "reading": "doa",
+    "meaning": "door"
+  },
+  {
+    "jp": "エレベーター",
+    "kana": null,
+    "reading": "erebeetaa",
+    "meaning": "elevator"
+  },
+  {
+    "jp": "フィルム",
+    "kana": null,
+    "reading": "firumu",
+    "meaning": "film"
+  },
+  {
+    "jp": "フォーク",
+    "kana": null,
+    "reading": "fooku",
+    "meaning": "fork"
+  },
+  {
+    "jp": "ギター",
+    "kana": null,
+    "reading": "gitaa",
+    "meaning": "guitar"
+  },
+  {
+    "jp": "グラム",
+    "kana": null,
+    "reading": "guramu",
+    "meaning": "gram"
+  },
+  {
+    "jp": "ハンカチ",
+    "kana": null,
+    "reading": "hankachi",
+    "meaning": "handkerchief"
+  },
+  {
+    "jp": "ホテル",
+    "kana": null,
+    "reading": "hoteru",
+    "meaning": "hotel"
+  },
+  {
+    "jp": "カメラ",
+    "kana": null,
+    "reading": "kamera",
+    "meaning": "camera"
+  },
+  {
+    "jp": "カップ",
+    "kana": null,
+    "reading": "kappu",
+    "meaning": "cup"
+  },
+  {
+    "jp": "カレー",
+    "kana": null,
+    "reading": "karee",
+    "meaning": "curry"
+  },
+  {
+    "jp": "カレンダー",
+    "kana": null,
+    "reading": "karendaa",
+    "meaning": "calendar"
+  },
+  {
+    "jp": "キログラム",
+    "kana": null,
+    "reading": "kiro guramu",
+    "meaning": "kilogram"
+  },
+  {
+    "jp": "キロメートル",
+    "kana": null,
+    "reading": "kiro meetoru",
+    "meaning": "kilometer"
+  },
+  {
+    "jp": "コーヒー",
+    "kana": null,
+    "reading": "koohii",
+    "meaning": "Coffee"
+  },
+  {
+    "jp": "コート",
+    "kana": null,
+    "reading": "kooto",
+    "meaning": "coat"
+  },
+  {
+    "jp": "コピー",
+    "kana": null,
+    "reading": "kopii",
+    "meaning": "copy; photocopy"
+  },
+  {
+    "jp": "コップ",
+    "kana": null,
+    "reading": "koppu",
+    "meaning": "glass (drinking vessel); tumbler"
+  },
+  {
+    "jp": "クラス",
+    "kana": null,
+    "reading": "kurasu",
+    "meaning": "class"
+  },
+  {
+    "jp": "マッチ",
+    "kana": null,
+    "reading": "macchi",
+    "meaning": "match"
+  },
+  {
+    "jp": "メートル",
+    "kana": null,
+    "reading": "meetoru",
+    "meaning": "metre; meter"
+  },
+  {
+    "jp": "ナイフ",
+    "kana": null,
+    "reading": "naifu",
+    "meaning": "knife"
+  },
+  {
+    "jp": "ネクタイ",
+    "kana": null,
+    "reading": "nekutai",
+    "meaning": "tie; necktie"
+  },
+  {
+    "jp": "ノート",
+    "kana": null,
+    "reading": "nooto",
+    "meaning": "notebook"
+  },
+  {
+    "jp": "ニュース",
+    "kana": null,
+    "reading": "nyuusu",
+    "meaning": "news"
+  },
+  {
+    "jp": "パーティー",
+    "kana": null,
+    "reading": "paatii",
+    "meaning": "party"
+  },
+  {
+    "jp": "パン",
+    "kana": null,
+    "reading": "pan",
+    "meaning": "bread"
+  },
+  {
+    "jp": "ページ",
+    "kana": null,
+    "reading": "peeji",
+    "meaning": "page"
+  },
+  {
+    "jp": "ペン",
+    "kana": null,
+    "reading": "pen",
+    "meaning": "pen"
+  },
+  {
+    "jp": "ペット",
+    "kana": null,
+    "reading": "petto",
+    "meaning": "pet"
+  },
+  {
+    "jp": "ポケット",
+    "kana": null,
+    "reading": "poketto",
+    "meaning": "pocket"
+  },
+  {
+    "jp": "ポスト",
+    "kana": null,
+    "reading": "posuto",
+    "meaning": "post"
+  },
+  {
+    "jp": "プール",
+    "kana": null,
+    "reading": "puuru",
+    "meaning": "swimming pool"
+  },
+  {
+    "jp": "ラジオ",
+    "kana": null,
+    "reading": "rajiio",
+    "meaning": "radio"
+  },
+  {
+    "jp": "レコード",
+    "kana": null,
+    "reading": "rekoodo",
+    "meaning": "record"
+  },
+  {
+    "jp": "レストラン",
+    "kana": null,
+    "reading": "resutoran",
+    "meaning": "restaurant"
+  },
+  {
+    "jp": "セーター",
+    "kana": null,
+    "reading": "seetaa",
+    "meaning": "sweater; jumper"
+  },
+  {
+    "jp": "シャツ",
+    "kana": null,
+    "reading": "shatsu",
+    "meaning": "shirt"
+  },
+  {
+    "jp": "シャワー",
+    "kana": null,
+    "reading": "shawaa",
+    "meaning": "shower"
+  },
+  {
+    "jp": "スカート",
+    "kana": null,
+    "reading": "sukaato",
+    "meaning": "skirt"
+  },
+  {
+    "jp": "スポーツ",
+    "kana": null,
+    "reading": "supootsu",
+    "meaning": "sport; sports"
+  },
+  {
+    "jp": "スプーン",
+    "kana": null,
+    "reading": "supuun",
+    "meaning": "spoon"
+  },
+  {
+    "jp": "スリッパ",
+    "kana": null,
+    "reading": "surippa",
+    "meaning": "slipper; slippers"
+  },
+  {
+    "jp": "ストーブ",
+    "kana": null,
+    "reading": "sutoobu",
+    "meaning": "heater; stove"
+  },
+  {
+    "jp": "タクシー",
+    "kana": null,
+    "reading": "takushii",
+    "meaning": "taxi"
+  },
+  {
+    "jp": "テーブル",
+    "kana": null,
+    "reading": "teeburu",
+    "meaning": "table"
+  },
+  {
+    "jp": "テープ",
+    "kana": null,
+    "reading": "teepu",
+    "meaning": "tape"
+  },
+  {
+    "jp": "テープレコーダー",
+    "kana": null,
+    "reading": "teepu rekoodaa",
+    "meaning": "tape recorder"
+  },
+  {
+    "jp": "テレビ",
+    "kana": null,
+    "reading": "terebi",
+    "meaning": "television; TV"
+  },
+  {
+    "jp": "テスト",
+    "kana": null,
+    "reading": "tesuto",
+    "meaning": "examination; quiz; test"
+  },
+  {
+    "jp": "トイレ",
+    "kana": null,
+    "reading": "toire",
+    "meaning": "toilet"
+  },
+  {
+    "jp": "ワイシャツ",
+    "kana": null,
+    "reading": "wai shatsu",
+    "meaning": "shirt"
+  },
+  {
+    "jp": "ゼロ",
+    "kana": null,
+    "reading": "zero",
+    "meaning": "zero"
+  },
+  {
+    "jp": "ズボン",
+    "kana": null,
+    "reading": "zubon",
+    "meaning": "trousers; pants"
+  }
+]

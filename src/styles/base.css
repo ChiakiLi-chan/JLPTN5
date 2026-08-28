@@ -1,0 +1,60 @@
+/* Design tokens, page shell, and the shared primitives (buttons, option
+   rows, screens) that every other stylesheet builds on. */
+
+:root { color-scheme: light; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(620px 380px at 50% -6%, rgba(207,154,44,0.14), transparent 65%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.028) 0, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 38px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.028) 0, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 38px),
+    linear-gradient(160deg, #1c3d59 0%, #0e2033 100%);
+}
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.dojo-root {
+  --paper: #eae3cf;
+  --paper-deep: #ddd3b6;
+  --paper-line: rgba(42,39,35,0.06);
+  --ink: #2a2723;
+  --ink-soft: #5c574d;
+  --indigo: #1f3f5c;
+  --indigo-deep: #16314a;
+  --gold: #cf9a2c;
+  --hanko: #a83a32;
+  --success: #4c7a4a;
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  min-height: 720px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  overflow: hidden;
+  border-radius: 22px;
+  isolation: isolate;
+  box-shadow: 0 44px 90px -28px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+.dojo-root *, .dojo-root *::before, .dojo-root *::after { box-sizing: border-box; }
+.dojo-root button { font-family: inherit; cursor: pointer; }
+.dojo-root button:disabled { opacity: 0.45; cursor: default; }
+.dojo-root button:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+.grid-veil {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, var(--paper-line) 0, var(--paper-line) 1px, transparent 1px, transparent 34px),
+    repeating-linear-gradient(90deg, var(--paper-line) 0, var(--paper-line) 1px, transparent 1px, transparent 34px);
+}
+
+.screen { position: relative; z-index: 1; padding: 28px 22px 24px; display: flex; flex-direction: column; flex: 1; min-height: 520px; }

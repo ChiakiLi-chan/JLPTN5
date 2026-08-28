@@ -1,0 +1,12 @@
+/* Entry point for all styles — imported once from src/main.jsx.
+   Order matters: base defines the tokens the rest build on, and
+   responsive must come last so its overrides win. */
+
+@import "./base.css";
+@import "./home.css";
+@import "./setup.css";
+@import "./quiz.css";
+@import "./flashcards.css";
+@import "./results.css";
+@import "./leaderboard.css";
+@import "./responsive.css";

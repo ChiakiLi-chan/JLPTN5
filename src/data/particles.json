@@ -1,0 +1,152 @@
+[
+  {
+    "jp": "だけ",
+    "kana": null,
+    "reading": "dake",
+    "meaning": "only; just; as much as ~"
+  },
+  {
+    "jp": "が",
+    "kana": null,
+    "reading": "ga",
+    "meaning": "subject marker; however; but ~"
+  },
+  {
+    "jp": "か",
+    "kana": null,
+    "reading": "ka",
+    "meaning": "question particle"
+  },
+  {
+    "jp": "か～か",
+    "kana": null,
+    "reading": "ka~ka",
+    "meaning": "or"
+  },
+  {
+    "jp": "から",
+    "kana": null,
+    "reading": "kara",
+    "meaning": "because; since; from"
+  },
+  {
+    "jp": "けど",
+    "kana": null,
+    "reading": "kedo",
+    "meaning": "but; however; although ~"
+  },
+  {
+    "jp": "けれども",
+    "kana": null,
+    "reading": "keredo mo",
+    "meaning": "but; however; although ~"
+  },
+  {
+    "jp": "まで",
+    "kana": null,
+    "reading": "made",
+    "meaning": "until; as far as; to (an extent); even ~"
+  },
+  {
+    "jp": "も",
+    "kana": null,
+    "reading": "mo",
+    "meaning": "too; also; as well"
+  },
+  {
+    "jp": "なあ",
+    "kana": null,
+    "reading": "naa",
+    "meaning": "sentence ending particle; confirmation; admiration, etc"
+  },
+  {
+    "jp": "んです",
+    "kana": null,
+    "reading": "ndesu",
+    "meaning": "to explain something; show emphasis"
+  },
+  {
+    "jp": "ね",
+    "kana": null,
+    "reading": "ne",
+    "meaning": "isn't it? right? eh?"
+  },
+  {
+    "jp": "に",
+    "kana": null,
+    "reading": "ni",
+    "meaning": "destination particle; in; at; on; to"
+  },
+  {
+    "jp": "に/へ",
+    "kana": null,
+    "reading": "ni/e",
+    "meaning": "to (indicates direction / destination)"
+  },
+  {
+    "jp": "の",
+    "kana": null,
+    "reading": "no",
+    "meaning": "possessive particle"
+  },
+  {
+    "jp": "のです",
+    "kana": null,
+    "reading": "no desu",
+    "meaning": "to explain something; show emphasis"
+  },
+  {
+    "jp": "ので",
+    "kana": null,
+    "reading": "node",
+    "meaning": "because of; given that; since ~"
+  },
+  {
+    "jp": "お / ご",
+    "kana": null,
+    "reading": "o / go",
+    "meaning": "polite marker; honorific prefix particle"
+  },
+  {
+    "jp": "を",
+    "kana": null,
+    "reading": "o / wo",
+    "meaning": "object marker particle"
+  },
+  {
+    "jp": "たり～たり",
+    "kana": null,
+    "reading": "tari~tari",
+    "meaning": "do such things as A and B"
+  },
+  {
+    "jp": "と",
+    "kana": null,
+    "reading": "to",
+    "meaning": "and; with; as; connecting particle"
+  },
+  {
+    "jp": "は",
+    "kana": null,
+    "reading": "wa - topic marker",
+    "meaning": "topic marker"
+  },
+  {
+    "jp": "や",
+    "kana": null,
+    "reading": "ya",
+    "meaning": "and; or; connecting particle"
+  },
+  {
+    "jp": "よ",
+    "kana": null,
+    "reading": "yo",
+    "meaning": "you know; emphasis (ending particle)"
+  },
+  {
+    "jp": "より～ほうが",
+    "kana": null,
+    "reading": "yori ~hou ga",
+    "meaning": "[2] is more than [1]"
+  }
+]

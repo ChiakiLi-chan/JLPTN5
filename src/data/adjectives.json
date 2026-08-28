@@ -1,0 +1,506 @@
+[
+  {
+    "jp": "危ない",
+    "kana": "あぶない",
+    "reading": "abunai",
+    "meaning": "dangerous"
+  },
+  {
+    "jp": "赤い",
+    "kana": "あかい",
+    "reading": "akai",
+    "meaning": "red; crimson; scarlet"
+  },
+  {
+    "jp": "明るい",
+    "kana": "あかるい",
+    "reading": "akarui",
+    "meaning": "bright; light"
+  },
+  {
+    "jp": "甘い",
+    "kana": "あまい",
+    "reading": "amai",
+    "meaning": "sweet; sweet-tasting; sugary; naive; indulgent"
+  },
+  {
+    "jp": "青い",
+    "kana": "あおい",
+    "reading": "aoi",
+    "meaning": "blue; azure"
+  },
+  {
+    "jp": "新しい",
+    "kana": "あたらしい",
+    "reading": "atarashii",
+    "meaning": "new; novel; fresh; recent; latest"
+  },
+  {
+    "jp": "暖かい",
+    "kana": "あたたかい",
+    "reading": "atatakai",
+    "meaning": "warm"
+  },
+  {
+    "jp": "熱い",
+    "kana": "あつい",
+    "reading": "atsui",
+    "meaning": "hot"
+  },
+  {
+    "jp": "厚い",
+    "kana": "あつい",
+    "reading": "atsui",
+    "meaning": "thick"
+  },
+  {
+    "jp": "暑い",
+    "kana": "あつい",
+    "reading": "atsui",
+    "meaning": "hot; sultry"
+  },
+  {
+    "jp": "便利",
+    "kana": "べんり",
+    "reading": "benri",
+    "meaning": "convenient; handy; useful"
+  },
+  {
+    "jp": "小さい",
+    "kana": "ちいさい",
+    "reading": "chiisai",
+    "meaning": "small; little; tiny"
+  },
+  {
+    "jp": "近い",
+    "kana": "ちかい",
+    "reading": "chikai",
+    "meaning": "near; close"
+  },
+  {
+    "jp": "大丈夫",
+    "kana": "だいじょうぶ",
+    "reading": "daijoubu",
+    "meaning": "OK; okay; alright; problem free"
+  },
+  {
+    "jp": "大好き",
+    "kana": "だいすき",
+    "reading": "daisuki",
+    "meaning": "love; like; like very much"
+  },
+  {
+    "jp": "古い",
+    "kana": "ふるい",
+    "reading": "furui",
+    "meaning": "old (not used for people)"
+  },
+  {
+    "jp": "太い",
+    "kana": "ふとい",
+    "reading": "futoi",
+    "meaning": "fat; thick"
+  },
+  {
+    "jp": "元気",
+    "kana": "げんき",
+    "reading": "genki",
+    "meaning": "lively; full of spirit; energetic; healthy"
+  },
+  {
+    "jp": "速い",
+    "kana": "はやい",
+    "reading": "hayai",
+    "meaning": "fast; quick; hasty; brisk"
+  },
+  {
+    "jp": "早い",
+    "kana": "はやい",
+    "reading": "hayai",
+    "meaning": "fast; early"
+  },
+  {
+    "jp": "下手",
+    "kana": "へた",
+    "reading": "heta",
+    "meaning": "unskillful; poor; awkward"
+  },
+  {
+    "jp": "低い",
+    "kana": "ひくい",
+    "reading": "hikui",
+    "meaning": "short,low"
+  },
+  {
+    "jp": "暇",
+    "kana": "ひま",
+    "reading": "hima",
+    "meaning": "free time"
+  },
+  {
+    "jp": "広い",
+    "kana": "ひろい",
+    "reading": "hiroi",
+    "meaning": "spacious; vast; wide"
+  },
+  {
+    "jp": "本当",
+    "kana": "ほんとう",
+    "reading": "hontou",
+    "meaning": "truth; reality; actuality; fact"
+  },
+  {
+    "jp": "欲しい",
+    "kana": "ほしい",
+    "reading": "hoshii",
+    "meaning": "want"
+  },
+  {
+    "jp": "細い",
+    "kana": "ほそい",
+    "reading": "hosoi",
+    "meaning": "thin; slender"
+  },
+  {
+    "jp": "色々",
+    "kana": "いろいろ",
+    "reading": "iroiro",
+    "meaning": "various"
+  },
+  {
+    "jp": "忙しい",
+    "kana": "いそがしい",
+    "reading": "isogashii",
+    "meaning": "busy"
+  },
+  {
+    "jp": "痛い",
+    "kana": "いたい",
+    "reading": "itai",
+    "meaning": "painful; sore"
+  },
+  {
+    "jp": "嫌",
+    "kana": "いや",
+    "reading": "iya",
+    "meaning": "unpleasant"
+  },
+  {
+    "jp": "丈夫",
+    "kana": "じょうぶ",
+    "reading": "joubu",
+    "meaning": "strong, durable"
+  },
+  {
+    "jp": "上手",
+    "kana": "じょうず",
+    "reading": "jouzu",
+    "meaning": "skillful; skilled; proficient; good (at)"
+  },
+  {
+    "jp": "辛い",
+    "kana": "からい",
+    "reading": "karai",
+    "meaning": "spicy"
+  },
+  {
+    "jp": "軽い",
+    "kana": "かるい",
+    "reading": "karui",
+    "meaning": "light"
+  },
+  {
+    "jp": "可愛い",
+    "kana": "かわいい",
+    "reading": "kawaii",
+    "meaning": "cute"
+  },
+  {
+    "jp": "結構",
+    "kana": "けっこう",
+    "reading": "kekkou",
+    "meaning": "splendid, enough"
+  },
+  {
+    "jp": "黄色い",
+    "kana": "きいろい",
+    "reading": "kiiroi",
+    "meaning": "yellow"
+  },
+  {
+    "jp": "嫌い",
+    "kana": "きらい",
+    "reading": "kirai",
+    "meaning": "hate"
+  },
+  {
+    "jp": "綺麗",
+    "kana": "きれい",
+    "reading": "kirei",
+    "meaning": "pretty; lovely; beautiful"
+  },
+  {
+    "jp": "汚い",
+    "kana": "きたない",
+    "reading": "kitanai",
+    "meaning": "dirty"
+  },
+  {
+    "jp": "暗い",
+    "kana": "くらい",
+    "reading": "kurai",
+    "meaning": "dark; gloomy; murky"
+  },
+  {
+    "jp": "黒い",
+    "kana": "くろい",
+    "reading": "kuroi",
+    "meaning": "black"
+  },
+  {
+    "jp": "丸い",
+    "kana": "まるい",
+    "reading": "marui",
+    "meaning": "round,circular"
+  },
+  {
+    "jp": "真っ直ぐ",
+    "kana": "まっすぐ",
+    "reading": "massugu",
+    "meaning": "straight ahead,direct"
+  },
+  {
+    "jp": "不味い",
+    "kana": "まずい",
+    "reading": "mazui",
+    "meaning": "unpleasant"
+  },
+  {
+    "jp": "短い",
+    "kana": "みじかい",
+    "reading": "mijikai",
+    "meaning": "short"
+  },
+  {
+    "jp": "難しい",
+    "kana": "むずかしい",
+    "reading": "muzukashii",
+    "meaning": "difficult"
+  },
+  {
+    "jp": "長い",
+    "kana": "ながい",
+    "reading": "nagai",
+    "meaning": "long (distance); long (time); lengthy."
+  },
+  {
+    "jp": "賑やか",
+    "kana": "にぎやか",
+    "reading": "nigiyaka",
+    "meaning": "bustling,busy"
+  },
+  {
+    "jp": "温い",
+    "kana": "ぬるい",
+    "reading": "nurui",
+    "meaning": "luke warm"
+  },
+  {
+    "jp": "美味しい",
+    "kana": "おいしい",
+    "reading": "oishii",
+    "meaning": "delicious"
+  },
+  {
+    "jp": "重い",
+    "kana": "おもい",
+    "reading": "omoi",
+    "meaning": "heavy"
+  },
+  {
+    "jp": "面白い",
+    "kana": "おもしろい",
+    "reading": "omoshiroi",
+    "meaning": "interesting"
+  },
+  {
+    "jp": "多い",
+    "kana": "おおい",
+    "reading": "ooi",
+    "meaning": "many; numerous; a lot; large quantity; frequent"
+  },
+  {
+    "jp": "大きい",
+    "kana": "おおきい",
+    "reading": "ookii",
+    "meaning": "big; large; great; important"
+  },
+  {
+    "jp": "遅い",
+    "kana": "おそい",
+    "reading": "osoi",
+    "meaning": "slow; time-consuming; late"
+  },
+  {
+    "jp": "立派",
+    "kana": "りっぱ",
+    "reading": "rippa",
+    "meaning": "splendid"
+  },
+  {
+    "jp": "寒い",
+    "kana": "さむい",
+    "reading": "samui",
+    "meaning": "cold"
+  },
+  {
+    "jp": "狭い",
+    "kana": "せまい",
+    "reading": "semai",
+    "meaning": "narrow"
+  },
+  {
+    "jp": "白い",
+    "kana": "しろい",
+    "reading": "shiroi",
+    "meaning": "white"
+  },
+  {
+    "jp": "静か",
+    "kana": "しずか",
+    "reading": "shizuka",
+    "meaning": "quiet"
+  },
+  {
+    "jp": "好き",
+    "kana": "すき",
+    "reading": "suki",
+    "meaning": "like"
+  },
+  {
+    "jp": "少ない",
+    "kana": "すくない",
+    "reading": "sukunai",
+    "meaning": "few; a little; scarce; insufficient; seldom"
+  },
+  {
+    "jp": "涼しい",
+    "kana": "すずしい",
+    "reading": "suzushii",
+    "meaning": "refreshing, cool"
+  },
+  {
+    "jp": "多分",
+    "kana": "たぶん",
+    "reading": "tabun",
+    "meaning": "perhaps; probably"
+  },
+  {
+    "jp": "大変",
+    "kana": "たいへん",
+    "reading": "taihen",
+    "meaning": "very; greatly; terribly; serious; difficult"
+  },
+  {
+    "jp": "大切",
+    "kana": "たいせつ",
+    "reading": "taisetsu",
+    "meaning": "important; necessary; indispensable; beloved"
+  },
+  {
+    "jp": "高い",
+    "kana": "たかい",
+    "reading": "takai",
+    "meaning": "high; tall; expensive; above average"
+  },
+  {
+    "jp": "沢山",
+    "kana": "たくさん",
+    "reading": "takusan",
+    "meaning": "many"
+  },
+  {
+    "jp": "楽しい",
+    "kana": "たのしい",
+    "reading": "tanoshii",
+    "meaning": "enjoyable; fun"
+  },
+  {
+    "jp": "遠い",
+    "kana": "とおい",
+    "reading": "tooi",
+    "meaning": "far"
+  },
+  {
+    "jp": "詰まらない",
+    "kana": "つまらない",
+    "reading": "tsumaranai",
+    "meaning": "boring"
+  },
+  {
+    "jp": "冷たい",
+    "kana": "つめたい",
+    "reading": "tsumetai",
+    "meaning": "cold to the touch"
+  },
+  {
+    "jp": "強い",
+    "kana": "つよい",
+    "reading": "tsuyoi",
+    "meaning": "powerful"
+  },
+  {
+    "jp": "煩い",
+    "kana": "うるさい",
+    "reading": "urusai",
+    "meaning": "noisy, annoying"
+  },
+  {
+    "jp": "薄い",
+    "kana": "うすい",
+    "reading": "usui",
+    "meaning": "thin; weak"
+  },
+  {
+    "jp": "若い",
+    "kana": "わかい",
+    "reading": "wakai",
+    "meaning": "young"
+  },
+  {
+    "jp": "悪い",
+    "kana": "わるい",
+    "reading": "warui",
+    "meaning": "bad; poor; undesirable"
+  },
+  {
+    "jp": "易しい",
+    "kana": "やさしい",
+    "reading": "yasashii",
+    "meaning": "easy, simple"
+  },
+  {
+    "jp": "安い",
+    "kana": "やすい",
+    "reading": "yasui",
+    "meaning": "cheap; inexpensive"
+  },
+  {
+    "jp": "良い",
+    "kana": "よい/いい",
+    "reading": "yoi/ii",
+    "meaning": "good"
+  },
+  {
+    "jp": "弱い",
+    "kana": "よわい",
+    "reading": "yowai",
+    "meaning": "weak"
+  },
+  {
+    "jp": "有名",
+    "kana": "ゆうめい",
+    "reading": "yuumei",
+    "meaning": "famous"
+  }
+]

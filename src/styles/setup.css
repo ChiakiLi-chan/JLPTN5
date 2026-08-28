@@ -1,0 +1,62 @@
+/* Quiz and flashcard setup: option rows, segmented controls,
+   the per-category config carousel, and the start CTA. */
+
+/* ---------- Setup screen ---------- */
+.setup-title { flex: 1; font-weight: 800; font-size: 14px; color: var(--indigo-deep); }
+.setup-body { display: flex; flex-direction: column; gap: 16px; }
+.setup-body-scroll { padding-right: 2px; }
+.setup-group { display: flex; flex-direction: column; gap: 8px; }
+.category-config { background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.1); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.category-config-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; font-weight: 700; color: var(--indigo-deep); padding-bottom: 8px; border-bottom: 1px solid rgba(42,39,35,0.12); }
+.category-config-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: none; border: none; padding: 0; width: 100%; text-align: left;
+}
+.category-config-summary { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ink-soft); font-weight: 600; flex-shrink: 0; }
+.chevron { transition: transform 0.18s ease; color: var(--ink-soft); }
+.chevron-open { transform: rotate(180deg); }
+.setup-sublabel { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: var(--ink-soft); margin-top: 4px; }
+
+.carousel-wrap { display: flex; flex-direction: column; gap: 8px; }
+.carousel-nav { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.carousel-arrow {
+  background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.14); border-radius: 999px;
+  padding: 6px; display: flex; color: var(--ink); flex-shrink: 0;
+}
+.carousel-arrow:disabled { opacity: 0.3; }
+.carousel-arrow:hover:not(:disabled) { border-color: var(--indigo); color: var(--indigo); }
+.carousel-dots { display: flex; gap: 6px; align-items: center; }
+.carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(42,39,35,0.22); border: none; padding: 0; transition: all 0.18s ease; }
+.carousel-dot-active { background: var(--indigo); width: 18px; border-radius: 4px; }
+.carousel-track {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; border-radius: 12px;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-slide { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; min-width: 0; }
+.carousel-hint { text-align: center; font-size: 11px; color: var(--ink-soft); margin: 0; }
+
+.setup-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; color: var(--ink-soft); }
+.setup-hint { font-size: 12.5px; color: var(--ink-soft); margin: 0; }
+.setup-hint-dim { font-size: 11px; opacity: 0.8; }
+.option-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.option-btn {
+  background: #fff; border: 1.5px solid rgba(42,39,35,0.16); border-radius: 10px; padding: 9px 14px;
+  font-size: 13px; font-weight: 700; color: var(--ink); transition: all .12s ease;
+}
+.option-btn-check { display: inline-flex; align-items: center; gap: 5px; }
+.option-btn:hover { border-color: var(--indigo); }
+.option-btn-active { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+
+/* Segmented-control variant: joined pill group for mutually-exclusive choices
+   (prompt/answer type, question count, same-for-all toggle) */
+.option-row.segmented { background: rgba(42,39,35,0.07); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: nowrap; }
+.option-row.segmented .option-btn { flex: 1; background: transparent; border: none; color: var(--ink-soft); padding: 8px 10px; white-space: nowrap; }
+.option-row.segmented .option-btn:hover { border-color: transparent; color: var(--ink); }
+.option-row.segmented .option-btn-active { background: #fff; border: none; color: var(--indigo-deep); box-shadow: 0 1px 3px rgba(0,0,0,0.14); }
+
+.overflow-note {
+  background: rgba(207,154,44,0.14); border: 1px solid rgba(207,154,44,0.4); border-radius: 10px;
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--ink);
+}
+.setup-start { width: 100%; justify-content: center; margin-top: auto; }

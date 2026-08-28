@@ -52,15 +52,34 @@ vercel dev                   # runs both the frontend and /api together
 
 ## Updating the word list
 
-The full word list lives as a big embedded JSON array (`RAW_ITEMS`) near the
-top of `src/App.jsx` — there's no live fetch from Google Sheets (that path
-doesn't work from a browser-sandboxed context and was intentionally dropped
-in favor of baking the data in directly). To refresh it:
+The word list is baked into the build — there's no live fetch from Google
+Sheets (that path doesn't work from a browser-sandboxed context and was
+intentionally dropped in favor of embedding the data directly).
+
+Each grammatical category is its own JSON file under `src/data/`, so entries
+are hand-editable without touching any code:
+
+```
+src/data/nouns.json                (100)   src/data/particles.json       (25)
+src/data/verbs.json                (100)   src/data/katakanaWords.json   (61)
+src/data/adjectives.json            (84)   src/data/hiragana.json        (46)
+src/data/adverbs.json               (35)   src/data/katakana.json        (46)
+src/data/preNounAdjectivals.json     (8)   src/data/kanji.json          (103)
+```
+
+To fix a single entry, edit its JSON file and redeploy — `src/data/vocabulary.js`
+picks it up automatically, assigning ids and filling in any absent fields.
+
+Rows omit the `category` field (implied by the filename) and omit fields that
+are null for the whole category: the kana files carry no `meaning`, and only
+`kanji.json` carries `onyomi`/`kunyomi`. A row needs `jp` plus whichever
+fields its category uses.
+
+To replace the whole set:
 
 1. Re-download your Google Sheet as `.xlsx`.
-2. Hand it back to Claude (in the same conversation this project came from,
-   or a fresh one referencing this file) and ask it to regenerate the
-   `RAW_ITEMS` block in `src/App.jsx` from the new file.
+2. Hand it back to Claude and ask it to regenerate the ten JSON files in
+   `src/data/` from the new file.
 3. Redeploy.
 
 ## Leaderboard rules
@@ -78,10 +97,57 @@ in favor of baking the data in directly). To refresh it:
 
 ## Project structure
 
+Layered so that each direction of dependency only ever points one way:
+`data → lib → components → App`. Nothing in `data/` or `lib/` imports React,
+touches the DOM, or knows a screen exists.
+
 ```
-src/App.jsx              the whole app (data + all screens)
-src/main.jsx             React entry point
-api/leaderboard.js       serverless function: GET reads a leaderboard, POST submits a score
-shared/leaderboardRules.js  constants/helpers shared by both the client and the API,
-                            so the qualification rule can't drift between the two
+src/
+  App.jsx                    root: screen routing and cross-screen state only
+  main.jsx                   React entry point
+
+  data/
+    *.json                   the word list, one file per category
+    vocabulary.js            loads them, assigns ids, exposes ALL_ITEMS /
+                             CATEGORIES / FIELD_LABELS and the category sets
+
+  lib/                       pure logic — no React, no DOM, no network
+    quizEngine.js            question resolution, distractor generation,
+                             session + flashcard building, config helpers
+    leaderboardApi.js        the only module that calls fetch()
+
+  components/
+    JpText.jsx               ruby/furigana rendering
+    Home.jsx                 mode selection, category summary, furigana toggle
+    CategoryPicker.jsx       full-screen category multi-select
+    QuizSetup.jsx            + ConfigCarousel, PromptAnswerFields
+    Quiz.jsx                 the in-quiz screen and its timer
+    QuizResults.jsx          + MissedItemPopup, score submission
+    Flashcards.jsx           + FlashcardsSetup, FlashcardBack
+    LeaderboardBrowser.jsx   browse any category/count/mode board
+
+  styles/
+    index.css                imports the rest, in order
+    base.css                 tokens, shell, shared buttons and option rows
+    home / setup / quiz / flashcards / results / leaderboard .css
+    responsive.css           breakpoints — imported LAST so its overrides win
+
+api/leaderboard.js           serverless function: GET reads a board, POST submits
+shared/leaderboardRules.js   constants/helpers shared by the client AND the API,
+                             so the qualification rule can't drift between them
 ```
+
+`shared/` sits outside `src/` on purpose: `api/leaderboard.js` imports from it
+too, which is what keeps the accuracy bar and plausibility floor identical on
+both sides.
+
+### Where to change what
+
+| To change… | Edit |
+| --- | --- |
+| A word, reading, or meaning | the matching `src/data/*.json` |
+| What a question asks, or how distractors are chosen | `src/lib/quizEngine.js` |
+| Time-attack seconds per question | `TIME_LIMITS` in `src/lib/quizEngine.js` |
+| Leaderboard qualification rules | `shared/leaderboardRules.js` (client + server both read it) |
+| Any single screen's markup | that screen's file in `src/components/` |
+| Colors, spacing, fonts | `src/styles/base.css` |

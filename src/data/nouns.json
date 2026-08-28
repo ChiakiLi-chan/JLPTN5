@@ -1,0 +1,602 @@
+[
+  {
+    "jp": "赤",
+    "kana": "あか",
+    "reading": "aka",
+    "meaning": "red; crimson; scarlet"
+  },
+  {
+    "jp": "秋",
+    "kana": "あき",
+    "reading": "aki",
+    "meaning": "autumn; fall"
+  },
+  {
+    "jp": "雨",
+    "kana": "あめ",
+    "reading": "ame",
+    "meaning": "rain"
+  },
+  {
+    "jp": "飴",
+    "kana": "あめ",
+    "reading": "ame",
+    "meaning": "candy"
+  },
+  {
+    "jp": "姉",
+    "kana": "あね",
+    "reading": "ane",
+    "meaning": "older sister; elder sister"
+  },
+  {
+    "jp": "兄",
+    "kana": "あに",
+    "reading": "ani",
+    "meaning": "elder brother; older brother"
+  },
+  {
+    "jp": "青",
+    "kana": "あお",
+    "reading": "ao",
+    "meaning": "blue; azure"
+  },
+  {
+    "jp": "アパート",
+    "kana": null,
+    "reading": "apaato",
+    "meaning": "apartment"
+  },
+  {
+    "jp": "朝",
+    "kana": "あさ",
+    "reading": "asa",
+    "meaning": "morning"
+  },
+  {
+    "jp": "朝ご飯",
+    "kana": "あさごはん",
+    "reading": "asagohan",
+    "meaning": "breakfast"
+  },
+  {
+    "jp": "明後日",
+    "kana": "あさって",
+    "reading": "asatte",
+    "meaning": "day after tomorrow"
+  },
+  {
+    "jp": "足",
+    "kana": "あし",
+    "reading": "ashi",
+    "meaning": "foot; leg; paw; arm"
+  },
+  {
+    "jp": "明日",
+    "kana": "あした",
+    "reading": "ashita",
+    "meaning": "tomorrow"
+  },
+  {
+    "jp": "頭",
+    "kana": "あたま",
+    "reading": "atama",
+    "meaning": "head"
+  },
+  {
+    "jp": "後",
+    "kana": "あと",
+    "reading": "ato",
+    "meaning": "behind; after; remainder; left; also"
+  },
+  {
+    "jp": "晩ご飯",
+    "kana": "ばんごはん",
+    "reading": "bangohan",
+    "meaning": "dinner; evening meal"
+  },
+  {
+    "jp": "番号",
+    "kana": "ばんごう",
+    "reading": "bangou",
+    "meaning": "number"
+  },
+  {
+    "jp": "バス",
+    "kana": null,
+    "reading": "basu",
+    "meaning": "bus"
+  },
+  {
+    "jp": "バター",
+    "kana": null,
+    "reading": "bataa",
+    "meaning": "butter"
+  },
+  {
+    "jp": "ベッド",
+    "kana": null,
+    "reading": "beddo",
+    "meaning": "bed"
+  },
+  {
+    "jp": "勉強",
+    "kana": "べんきょう",
+    "reading": "benkyou",
+    "meaning": "to study"
+  },
+  {
+    "jp": "ボールペン",
+    "kana": null,
+    "reading": "boorupen",
+    "meaning": "ball-point pen"
+  },
+  {
+    "jp": "ボタン",
+    "kana": null,
+    "reading": "botan",
+    "meaning": "button"
+  },
+  {
+    "jp": "帽子",
+    "kana": "ぼうし",
+    "reading": "boushi",
+    "meaning": "hat; cap"
+  },
+  {
+    "jp": "文章",
+    "kana": "ぶんしょう",
+    "reading": "bunshou",
+    "meaning": "sentence"
+  },
+  {
+    "jp": "豚肉",
+    "kana": "ぶたにく",
+    "reading": "butaniku",
+    "meaning": "pork"
+  },
+  {
+    "jp": "病院",
+    "kana": "びょういん",
+    "reading": "byouin",
+    "meaning": "hospital"
+  },
+  {
+    "jp": "病気",
+    "kana": "びょうき",
+    "reading": "byouki",
+    "meaning": "illness; disease; sickness"
+  },
+  {
+    "jp": "茶色",
+    "kana": "ちゃいろ",
+    "reading": "chairo",
+    "meaning": "brown"
+  },
+  {
+    "jp": "茶碗",
+    "kana": "ちゃわん",
+    "reading": "chawan",
+    "meaning": "rice bowl; tea cup; teacup"
+  },
+  {
+    "jp": "父",
+    "kana": "ちち",
+    "reading": "chichi",
+    "meaning": "father"
+  },
+  {
+    "jp": "地下鉄",
+    "kana": "ちかてつ",
+    "reading": "chikatetsu",
+    "meaning": "subway; underground train"
+  },
+  {
+    "jp": "地図",
+    "kana": "ちず",
+    "reading": "chizu",
+    "meaning": "map"
+  },
+  {
+    "jp": "台所",
+    "kana": "だいどころ",
+    "reading": "daidokoro",
+    "meaning": "kitchen"
+  },
+  {
+    "jp": "大学",
+    "kana": "だいがく",
+    "reading": "daigaku",
+    "meaning": "university; college"
+  },
+  {
+    "jp": "出口",
+    "kana": "でぐち",
+    "reading": "deguchi",
+    "meaning": "exit; gateway; way out"
+  },
+  {
+    "jp": "電気",
+    "kana": "でんき",
+    "reading": "denki",
+    "meaning": "electricity"
+  },
+  {
+    "jp": "電車",
+    "kana": "でんしゃ",
+    "reading": "densha",
+    "meaning": "train; electric train"
+  },
+  {
+    "jp": "電話",
+    "kana": "でんわ",
+    "reading": "denwa",
+    "meaning": "telephone (call / device)l; phone call"
+  },
+  {
+    "jp": "デパート",
+    "kana": null,
+    "reading": "depaato",
+    "meaning": "department store"
+  },
+  {
+    "jp": "ドア",
+    "kana": null,
+    "reading": "doa",
+    "meaning": "door"
+  },
+  {
+    "jp": "どなた",
+    "kana": null,
+    "reading": "donata",
+    "meaning": "who"
+  },
+  {
+    "jp": "動物",
+    "kana": "どうぶつ",
+    "reading": "doubutsu",
+    "meaning": "animal"
+  },
+  {
+    "jp": "土曜日",
+    "kana": "どようび",
+    "reading": "doyoubi",
+    "meaning": "Saturday"
+  },
+  {
+    "jp": "絵",
+    "kana": "え",
+    "reading": "e",
+    "meaning": "picture"
+  },
+  {
+    "jp": "ええ",
+    "kana": null,
+    "reading": "ee",
+    "meaning": "yes; that is correct; right"
+  },
+  {
+    "jp": "映画",
+    "kana": "えいが",
+    "reading": "eiga",
+    "meaning": "movie; film"
+  },
+  {
+    "jp": "映画館",
+    "kana": "えいがかん",
+    "reading": "eigakan",
+    "meaning": "movie theater; cinema"
+  },
+  {
+    "jp": "英語",
+    "kana": "えいご",
+    "reading": "eigo",
+    "meaning": "English language"
+  },
+  {
+    "jp": "駅",
+    "kana": "えき",
+    "reading": "eki",
+    "meaning": "station"
+  },
+  {
+    "jp": "鉛筆",
+    "kana": "えんぴつ",
+    "reading": "enpitsu",
+    "meaning": "pencil"
+  },
+  {
+    "jp": "エレベーター",
+    "kana": null,
+    "reading": "erebeetaa",
+    "meaning": "elevator"
+  },
+  {
+    "jp": "フィルム",
+    "kana": null,
+    "reading": "firumu",
+    "meaning": "film"
+  },
+  {
+    "jp": "フォーク",
+    "kana": null,
+    "reading": "fooku",
+    "meaning": "fork"
+  },
+  {
+    "jp": "服",
+    "kana": "ふく",
+    "reading": "fuku",
+    "meaning": "clothes"
+  },
+  {
+    "jp": "二人",
+    "kana": "ふたり",
+    "reading": "futari",
+    "meaning": "two people; pair; couple"
+  },
+  {
+    "jp": "二つ",
+    "kana": "ふたつ",
+    "reading": "futatsu",
+    "meaning": "two; 2"
+  },
+  {
+    "jp": "二日",
+    "kana": "ふつか",
+    "reading": "futsuka",
+    "meaning": "the second day of the month / 2 days"
+  },
+  {
+    "jp": "封筒",
+    "kana": "ふうとう",
+    "reading": "fuutou",
+    "meaning": "envelope"
+  },
+  {
+    "jp": "冬",
+    "kana": "ふゆ",
+    "reading": "fuyu",
+    "meaning": "winter"
+  },
+  {
+    "jp": "外国",
+    "kana": "がいこく",
+    "reading": "gaikoku",
+    "meaning": "foreign country"
+  },
+  {
+    "jp": "外国人",
+    "kana": "がいこくじん",
+    "reading": "gaikokujin",
+    "meaning": "foreigner; foreign citizen; foreign national; alien; non-Japanese"
+  },
+  {
+    "jp": "学校",
+    "kana": "がっこう",
+    "reading": "gakkou",
+    "meaning": "school"
+  },
+  {
+    "jp": "学生",
+    "kana": "がくせい",
+    "reading": "gakusei",
+    "meaning": "student"
+  },
+  {
+    "jp": "玄関",
+    "kana": "げんかん",
+    "reading": "genkan",
+    "meaning": "entrance"
+  },
+  {
+    "jp": "元気",
+    "kana": "げんき",
+    "reading": "genki",
+    "meaning": "lively; full of spirit; energetic; healthy"
+  },
+  {
+    "jp": "月曜日",
+    "kana": "げつようび",
+    "reading": "getsuyoubi",
+    "meaning": "Monday"
+  },
+  {
+    "jp": "銀行",
+    "kana": "ぎんこう",
+    "reading": "ginkou",
+    "meaning": "bank"
+  },
+  {
+    "jp": "ギター",
+    "kana": null,
+    "reading": "gitaa",
+    "meaning": "guitar"
+  },
+  {
+    "jp": "五",
+    "kana": "ご",
+    "reading": "go",
+    "meaning": "five; 5"
+  },
+  {
+    "jp": "午後",
+    "kana": "ごご",
+    "reading": "gogo",
+    "meaning": "afternoon; p.m."
+  },
+  {
+    "jp": "ご飯",
+    "kana": "ごはん",
+    "reading": "gohan",
+    "meaning": "cooked rice, meal"
+  },
+  {
+    "jp": "午前",
+    "kana": "ごぜん",
+    "reading": "gozen",
+    "meaning": "morning; a.m."
+  },
+  {
+    "jp": "グラム",
+    "kana": null,
+    "reading": "guramu",
+    "meaning": "gram"
+  },
+  {
+    "jp": "牛肉",
+    "kana": "ぎゅうにく",
+    "reading": "gyuuniku",
+    "meaning": "beef"
+  },
+  {
+    "jp": "牛乳",
+    "kana": "ぎゅうにゅう",
+    "reading": "gyuunyuu",
+    "meaning": "(cow's) milk"
+  },
+  {
+    "jp": "歯",
+    "kana": "は",
+    "reading": "ha",
+    "meaning": "tooth"
+  },
+  {
+    "jp": "八",
+    "kana": "はち",
+    "reading": "hachi",
+    "meaning": "eight: 8"
+  },
+  {
+    "jp": "葉書",
+    "kana": "はがき",
+    "reading": "hagaki",
+    "meaning": "postcard"
+  },
+  {
+    "jp": "母",
+    "kana": "はは",
+    "reading": "haha",
+    "meaning": "mother"
+  },
+  {
+    "jp": "はい",
+    "kana": null,
+    "reading": "hai",
+    "meaning": "yes; that is correct"
+  },
+  {
+    "jp": "灰皿",
+    "kana": "はいざら",
+    "reading": "haizara",
+    "meaning": "ashtray"
+  },
+  {
+    "jp": "箱",
+    "kana": "はこ",
+    "reading": "hako",
+    "meaning": "box; crate"
+  },
+  {
+    "jp": "半",
+    "kana": "はん",
+    "reading": "han",
+    "meaning": "half; semi-; half-past"
+  },
+  {
+    "jp": "花",
+    "kana": "はな",
+    "reading": "hana",
+    "meaning": "flower"
+  },
+  {
+    "jp": "鼻",
+    "kana": "はな",
+    "reading": "hana",
+    "meaning": "nose"
+  },
+  {
+    "jp": "話",
+    "kana": "はなし",
+    "reading": "hanashi",
+    "meaning": "talk; speech; chat; conversation"
+  },
+  {
+    "jp": "半分",
+    "kana": "はんぶん",
+    "reading": "hanbun",
+    "meaning": "half"
+  },
+  {
+    "jp": "ハンカチ",
+    "kana": null,
+    "reading": "hankachi",
+    "meaning": "handkerchief"
+  },
+  {
+    "jp": "晴れ",
+    "kana": "はれ",
+    "reading": "hare",
+    "meaning": "clear weather"
+  },
+  {
+    "jp": "春",
+    "kana": "はる",
+    "reading": "haru",
+    "meaning": "spring; springtime"
+  },
+  {
+    "jp": "箸",
+    "kana": "はし",
+    "reading": "hashi",
+    "meaning": "chopsticks"
+  },
+  {
+    "jp": "橋",
+    "kana": "はし",
+    "reading": "hashi",
+    "meaning": "bridge"
+  },
+  {
+    "jp": "二十歳",
+    "kana": "はたち",
+    "reading": "hatachi",
+    "meaning": "20 years old; twenty years old"
+  },
+  {
+    "jp": "二十日",
+    "kana": "はつか",
+    "reading": "hatsuka",
+    "meaning": "twentieth day of the month / 20 days"
+  },
+  {
+    "jp": "辺",
+    "kana": "へん",
+    "reading": "hen",
+    "meaning": "area"
+  },
+  {
+    "jp": "下手",
+    "kana": "へた",
+    "reading": "heta",
+    "meaning": "unskillful; poor; awkward"
+  },
+  {
+    "jp": "部屋",
+    "kana": "へや",
+    "reading": "heya",
+    "meaning": "room"
+  },
+  {
+    "jp": "左",
+    "kana": "ひだり",
+    "reading": "hidari",
+    "meaning": "left; left hand side"
+  },
+  {
+    "jp": "東",
+    "kana": "ひがし",
+    "reading": "higashi",
+    "meaning": "east"
+  }
+]

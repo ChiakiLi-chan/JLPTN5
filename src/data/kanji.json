@@ -1,0 +1,826 @@
+[
+  {
+    "jp": "日",
+    "kana": null,
+    "reading": "hi, -bi, -ka / nichi, jitsu",
+    "onyomi": "nichi, jitsu",
+    "kunyomi": "hi, -bi, -ka",
+    "meaning": "day, sun, Japan, counter for days"
+  },
+  {
+    "jp": "一",
+    "kana": null,
+    "reading": "hito(tsu) / ichi",
+    "onyomi": "ichi",
+    "kunyomi": "hito(tsu)",
+    "meaning": "one"
+  },
+  {
+    "jp": "国",
+    "kana": null,
+    "reading": "kuni / koku",
+    "onyomi": "koku",
+    "kunyomi": "kuni",
+    "meaning": "country"
+  },
+  {
+    "jp": "人",
+    "kana": null,
+    "reading": "hito / jin, nin",
+    "onyomi": "jin, nin",
+    "kunyomi": "hito",
+    "meaning": "person"
+  },
+  {
+    "jp": "年",
+    "kana": null,
+    "reading": "toshi / nen",
+    "onyomi": "nen",
+    "kunyomi": "toshi",
+    "meaning": "year, counter for years"
+  },
+  {
+    "jp": "大",
+    "kana": null,
+    "reading": "oo(kii) / dai, tai",
+    "onyomi": "dai, tai",
+    "kunyomi": "oo(kii)",
+    "meaning": "large, big"
+  },
+  {
+    "jp": "十",
+    "kana": null,
+    "reading": "tou, to / juu",
+    "onyomi": "juu",
+    "kunyomi": "tou, to",
+    "meaning": "ten, 10"
+  },
+  {
+    "jp": "二",
+    "kana": null,
+    "reading": "futa(tsu) / ni, ji",
+    "onyomi": "ni, ji",
+    "kunyomi": "futa(tsu)",
+    "meaning": "two, 2"
+  },
+  {
+    "jp": "本",
+    "kana": null,
+    "reading": "moto / hon",
+    "onyomi": "hon",
+    "kunyomi": "moto",
+    "meaning": "book, present, true, counter for long cylindrical things"
+  },
+  {
+    "jp": "中",
+    "kana": null,
+    "reading": "naka, uchi, ata(ru) / chuu",
+    "onyomi": "chuu",
+    "kunyomi": "naka, uchi, ata(ru)",
+    "meaning": "in, inside, middle, mean, center"
+  },
+  {
+    "jp": "長",
+    "kana": null,
+    "reading": "naga(i), osa / chou",
+    "onyomi": "chou",
+    "kunyomi": "naga(i), osa",
+    "meaning": "long, leader, superior, senior"
+  },
+  {
+    "jp": "出",
+    "kana": null,
+    "reading": "de(ru), da(su), i(deru) / shutsu, sui",
+    "onyomi": "shutsu, sui",
+    "kunyomi": "de(ru), da(su), i(deru)",
+    "meaning": "exit, leave, go out"
+  },
+  {
+    "jp": "三",
+    "kana": null,
+    "reading": "mi(tsu) / san",
+    "onyomi": "san",
+    "kunyomi": "mi(tsu)",
+    "meaning": "three, 3"
+  },
+  {
+    "jp": "時",
+    "kana": null,
+    "reading": "toki, doki / ji",
+    "onyomi": "ji",
+    "kunyomi": "toki, doki",
+    "meaning": "time, hour"
+  },
+  {
+    "jp": "行",
+    "kana": null,
+    "reading": "i(ku), yu(ku), okona(u) / kou, gyou, an",
+    "onyomi": "kou, gyou, an",
+    "kunyomi": "i(ku), yu(ku), okona(u)",
+    "meaning": "going, journey, carry out, line, row"
+  },
+  {
+    "jp": "見",
+    "kana": null,
+    "reading": "mi(ru), mi(seru) / ken",
+    "onyomi": "ken",
+    "kunyomi": "mi(ru), mi(seru)",
+    "meaning": "see, hopes, chances, idea, opinion, look at, visible"
+  },
+  {
+    "jp": "月",
+    "kana": null,
+    "reading": "tsuki / getsu, gatsu",
+    "onyomi": "getsu, gatsu",
+    "kunyomi": "tsuki",
+    "meaning": "month, moon"
+  },
+  {
+    "jp": "分",
+    "kana": null,
+    "reading": "wa(keru) / bun, fun, bu",
+    "onyomi": "bun, fun, bu",
+    "kunyomi": "wa(keru)",
+    "meaning": "part, minute of time, understand"
+  },
+  {
+    "jp": "後",
+    "kana": null,
+    "reading": "nochi, ushi(ro), ato / go, kou",
+    "onyomi": "go, kou",
+    "kunyomi": "nochi, ushi(ro), ato",
+    "meaning": "behind, back, later"
+  },
+  {
+    "jp": "前",
+    "kana": null,
+    "reading": "mae / zen",
+    "onyomi": "zen",
+    "kunyomi": "mae",
+    "meaning": "in front, before"
+  },
+  {
+    "jp": "生",
+    "kana": null,
+    "reading": "i(kiru), u(mu), o(u), ha(eru), nama / sei, shou",
+    "onyomi": "sei, shou",
+    "kunyomi": "i(kiru), u(mu), o(u), ha(eru), nama",
+    "meaning": "life, genuine, birth"
+  },
+  {
+    "jp": "五",
+    "kana": null,
+    "reading": "itsu(tsu) / go",
+    "onyomi": "go",
+    "kunyomi": "itsu(tsu)",
+    "meaning": "five, 5"
+  },
+  {
+    "jp": "間",
+    "kana": null,
+    "reading": "aida, ma, ai / kan, ken",
+    "onyomi": "kan, ken",
+    "kunyomi": "aida, ma, ai",
+    "meaning": "interval, space"
+  },
+  {
+    "jp": "上",
+    "kana": null,
+    "reading": "ue, uwa, kami, a(geru), nobo(ru), tatematsu(ru) / jou, shou, shan",
+    "onyomi": "jou, shou, shan",
+    "kunyomi": "ue, uwa, kami, a(geru), nobo(ru), tatematsu(ru)",
+    "meaning": "above, up"
+  },
+  {
+    "jp": "東",
+    "kana": null,
+    "reading": "higashi / tou",
+    "onyomi": "tou",
+    "kunyomi": "higashi",
+    "meaning": "east"
+  },
+  {
+    "jp": "四",
+    "kana": null,
+    "reading": "yo(tsu), yon / shi",
+    "onyomi": "shi",
+    "kunyomi": "yo(tsu), yon",
+    "meaning": "four, 4"
+  },
+  {
+    "jp": "今",
+    "kana": null,
+    "reading": "ima / kon, kin",
+    "onyomi": "kon, kin",
+    "kunyomi": "ima",
+    "meaning": "now; the present"
+  },
+  {
+    "jp": "金",
+    "kana": null,
+    "reading": "kane, kana, gane / kin, kon, gon",
+    "onyomi": "kin, kon, gon",
+    "kunyomi": "kane, kana, gane",
+    "meaning": "gold"
+  },
+  {
+    "jp": "九",
+    "kana": null,
+    "reading": "kokono(tsu) / kyuu, ku",
+    "onyomi": "kyuu, ku",
+    "kunyomi": "kokono(tsu)",
+    "meaning": "nine, 9"
+  },
+  {
+    "jp": "入",
+    "kana": null,
+    "reading": "i(ru), hai(ru) / nyuu",
+    "onyomi": "nyuu",
+    "kunyomi": "i(ru), hai(ru)",
+    "meaning": "enter, insert"
+  },
+  {
+    "jp": "学",
+    "kana": null,
+    "reading": "mana(bu) / gaku",
+    "onyomi": "gaku",
+    "kunyomi": "mana(bu)",
+    "meaning": "study, learning, science"
+  },
+  {
+    "jp": "高",
+    "kana": null,
+    "reading": "taka(i) / kou",
+    "onyomi": "kou",
+    "kunyomi": "taka(i)",
+    "meaning": "tall, high, expensive"
+  },
+  {
+    "jp": "円",
+    "kana": null,
+    "reading": "maru(i) / en",
+    "onyomi": "en",
+    "kunyomi": "maru(i)",
+    "meaning": "circle, yen, round"
+  },
+  {
+    "jp": "子",
+    "kana": null,
+    "reading": "ko, ne / shi, su, tsu",
+    "onyomi": "shi, su, tsu",
+    "kunyomi": "ko, ne",
+    "meaning": "child"
+  },
+  {
+    "jp": "外",
+    "kana": null,
+    "reading": "soto, hoka, hazu-, to- / gai, ge",
+    "onyomi": "gai, ge",
+    "kunyomi": "soto, hoka, hazu-, to-",
+    "meaning": "outside"
+  },
+  {
+    "jp": "八",
+    "kana": null,
+    "reading": "ya(tsu), you / hachi",
+    "onyomi": "hachi",
+    "kunyomi": "ya(tsu), you",
+    "meaning": "eight, 8"
+  },
+  {
+    "jp": "六",
+    "kana": null,
+    "reading": "mu(tsu), mui / roku",
+    "onyomi": "roku",
+    "kunyomi": "mu(tsu), mui",
+    "meaning": "six, 6"
+  },
+  {
+    "jp": "下",
+    "kana": null,
+    "reading": "shita, shimo, moto, sa(geru), kuda(ru), o(rosu) / ka, ge",
+    "onyomi": "ka, ge",
+    "kunyomi": "shita, shimo, moto, sa(geru), kuda(ru), o(rosu)",
+    "meaning": "below, down, descend, give, low, inferior"
+  },
+  {
+    "jp": "来",
+    "kana": null,
+    "reading": "kuru, kitaru, ki, ko / rai, tai",
+    "onyomi": "rai, tai",
+    "kunyomi": "kuru, kitaru, ki, ko",
+    "meaning": "come, due, next, cause, become"
+  },
+  {
+    "jp": "気",
+    "kana": null,
+    "reading": "iki / ki, ke",
+    "onyomi": "ki, ke",
+    "kunyomi": "iki",
+    "meaning": "spirit, mind, air, atmosphere, mood"
+  },
+  {
+    "jp": "小",
+    "kana": null,
+    "reading": "chii(sai), ko-, o-, sa- / shou",
+    "onyomi": "shou",
+    "kunyomi": "chii(sai), ko-, o-, sa-",
+    "meaning": "little, small"
+  },
+  {
+    "jp": "七",
+    "kana": null,
+    "reading": "nana(tsu), nano / shichi",
+    "onyomi": "shichi",
+    "kunyomi": "nana(tsu), nano",
+    "meaning": "seven, 7"
+  },
+  {
+    "jp": "山",
+    "kana": null,
+    "reading": "yama / san, sen",
+    "onyomi": "san, sen",
+    "kunyomi": "yama",
+    "meaning": "mountain"
+  },
+  {
+    "jp": "話",
+    "kana": null,
+    "reading": "hana(su), hanashi / wa",
+    "onyomi": "wa",
+    "kunyomi": "hana(su), hanashi",
+    "meaning": "tale, talk"
+  },
+  {
+    "jp": "女",
+    "kana": null,
+    "reading": "onnna, me / jo",
+    "onyomi": "jo",
+    "kunyomi": "onnna, me",
+    "meaning": "woman, female"
+  },
+  {
+    "jp": "北",
+    "kana": null,
+    "reading": "kita / hoku",
+    "onyomi": "hoku",
+    "kunyomi": "kita",
+    "meaning": "north"
+  },
+  {
+    "jp": "午",
+    "kana": null,
+    "reading": "uma / go",
+    "onyomi": "go",
+    "kunyomi": "uma",
+    "meaning": "noon, sign of the horse"
+  },
+  {
+    "jp": "百",
+    "kana": null,
+    "reading": "momo / hyaku, byaku",
+    "onyomi": "hyaku, byaku",
+    "kunyomi": "momo",
+    "meaning": "hundred"
+  },
+  {
+    "jp": "書",
+    "kana": null,
+    "reading": "kaku / sho",
+    "onyomi": "sho",
+    "kunyomi": "kaku",
+    "meaning": "write"
+  },
+  {
+    "jp": "先",
+    "kana": null,
+    "reading": "saki, ma(zu) / sen",
+    "onyomi": "sen",
+    "kunyomi": "saki, ma(zu)",
+    "meaning": "before, ahead, previous, future, precedence"
+  },
+  {
+    "jp": "名",
+    "kana": null,
+    "reading": "na / mei, myou",
+    "onyomi": "mei, myou",
+    "kunyomi": "na",
+    "meaning": "name, noted, distinguished, reputation"
+  },
+  {
+    "jp": "川",
+    "kana": null,
+    "reading": "kawa / sen",
+    "onyomi": "sen",
+    "kunyomi": "kawa",
+    "meaning": "river, stream"
+  },
+  {
+    "jp": "千",
+    "kana": null,
+    "reading": "chi / sen",
+    "onyomi": "sen",
+    "kunyomi": "chi",
+    "meaning": "thousand"
+  },
+  {
+    "jp": "水",
+    "kana": null,
+    "reading": "mizu / sui",
+    "onyomi": "sui",
+    "kunyomi": "mizu",
+    "meaning": "water"
+  },
+  {
+    "jp": "半",
+    "kana": null,
+    "reading": "naka(ba) / han",
+    "onyomi": "han",
+    "kunyomi": "naka(ba)",
+    "meaning": "half, middle, odd number, semi-"
+  },
+  {
+    "jp": "男",
+    "kana": null,
+    "reading": "otoko, o / dan, nan",
+    "onyomi": "dan, nan",
+    "kunyomi": "otoko, o",
+    "meaning": "male; man"
+  },
+  {
+    "jp": "西",
+    "kana": null,
+    "reading": "nishi / sei, sai",
+    "onyomi": "sei, sai",
+    "kunyomi": "nishi",
+    "meaning": "west"
+  },
+  {
+    "jp": "電",
+    "kana": null,
+    "reading": "den",
+    "onyomi": "den",
+    "kunyomi": null,
+    "meaning": "electricity; electric powered"
+  },
+  {
+    "jp": "校",
+    "kana": null,
+    "reading": "kou",
+    "onyomi": "kou",
+    "kunyomi": null,
+    "meaning": "school, exam"
+  },
+  {
+    "jp": "語",
+    "kana": null,
+    "reading": "kata(ru) / go",
+    "onyomi": "go",
+    "kunyomi": "kata(ru)",
+    "meaning": "word, speech, language"
+  },
+  {
+    "jp": "土",
+    "kana": null,
+    "reading": "tsuchi / do, to",
+    "onyomi": "do, to",
+    "kunyomi": "tsuchi",
+    "meaning": "soil, earth, ground"
+  },
+  {
+    "jp": "木",
+    "kana": null,
+    "reading": "ki, ko / boku, moku",
+    "onyomi": "boku, moku",
+    "kunyomi": "ki, ko",
+    "meaning": "tree, wood"
+  },
+  {
+    "jp": "聞",
+    "kana": null,
+    "reading": "ki(ku) / bun, mon",
+    "onyomi": "bun, mon",
+    "kunyomi": "ki(ku)",
+    "meaning": "to hear; to listen; to ask"
+  },
+  {
+    "jp": "食",
+    "kana": null,
+    "reading": "k(u), ta(beru), ha(mu) / shoku, jiki",
+    "onyomi": "shoku, jiki",
+    "kunyomi": "k(u), ta(beru), ha(mu)",
+    "meaning": "eat, food"
+  },
+  {
+    "jp": "車",
+    "kana": null,
+    "reading": "kuruma / sha",
+    "onyomi": "sha",
+    "kunyomi": "kuruma",
+    "meaning": "car, wheel"
+  },
+  {
+    "jp": "何",
+    "kana": null,
+    "reading": "nani, nan / ka",
+    "onyomi": "ka",
+    "kunyomi": "nani, nan",
+    "meaning": "what"
+  },
+  {
+    "jp": "南",
+    "kana": null,
+    "reading": "minami / nan, na",
+    "onyomi": "nan, na",
+    "kunyomi": "minami",
+    "meaning": "south"
+  },
+  {
+    "jp": "万",
+    "kana": null,
+    "reading": "man, ban",
+    "onyomi": "man, ban",
+    "kunyomi": null,
+    "meaning": "ten thousand, 10,000"
+  },
+  {
+    "jp": "毎",
+    "kana": null,
+    "reading": "goto(ni) / mai",
+    "onyomi": "mai",
+    "kunyomi": "goto(ni)",
+    "meaning": "every"
+  },
+  {
+    "jp": "白",
+    "kana": null,
+    "reading": "shiro(i) / haku, byaku",
+    "onyomi": "haku, byaku",
+    "kunyomi": "shiro(i)",
+    "meaning": "white"
+  },
+  {
+    "jp": "天",
+    "kana": null,
+    "reading": "amatsu / ten",
+    "onyomi": "ten",
+    "kunyomi": "amatsu",
+    "meaning": "heavens, sky, imperial"
+  },
+  {
+    "jp": "母",
+    "kana": null,
+    "reading": "haha, kaa / bo",
+    "onyomi": "bo",
+    "kunyomi": "haha, kaa",
+    "meaning": "mother"
+  },
+  {
+    "jp": "火",
+    "kana": null,
+    "reading": "hi, bi, ho / ka",
+    "onyomi": "ka",
+    "kunyomi": "hi, bi, ho",
+    "meaning": "fire"
+  },
+  {
+    "jp": "右",
+    "kana": null,
+    "reading": "migi / u, yuu",
+    "onyomi": "u, yuu",
+    "kunyomi": "migi",
+    "meaning": "right (direction)"
+  },
+  {
+    "jp": "読",
+    "kana": null,
+    "reading": "yo(mu) / doku, toku, tou",
+    "onyomi": "doku, toku, tou",
+    "kunyomi": "yo(mu)",
+    "meaning": "to read"
+  },
+  {
+    "jp": "友",
+    "kana": null,
+    "reading": "tomo / yuu",
+    "onyomi": "yuu",
+    "kunyomi": "tomo",
+    "meaning": "friend"
+  },
+  {
+    "jp": "左",
+    "kana": null,
+    "reading": "hidari / sa, sha",
+    "onyomi": "sa, sha",
+    "kunyomi": "hidari",
+    "meaning": "left"
+  },
+  {
+    "jp": "休",
+    "kana": null,
+    "reading": "yasu(mu) / kyuu",
+    "onyomi": "kyuu",
+    "kunyomi": "yasu(mu)",
+    "meaning": "rest, day off, retire, sleep"
+  },
+  {
+    "jp": "父",
+    "kana": null,
+    "reading": "chichi, tou / fu",
+    "onyomi": "fu",
+    "kunyomi": "chichi, tou",
+    "meaning": "father"
+  },
+  {
+    "jp": "雨",
+    "kana": null,
+    "reading": "ame, ama / u",
+    "onyomi": "u",
+    "kunyomi": "ame, ama",
+    "meaning": "rain"
+  },
+  {
+    "jp": "安",
+    "kana": null,
+    "reading": "yasu(i) / an",
+    "onyomi": "an",
+    "kunyomi": "yasu(i)",
+    "meaning": "peace, cheap, safety"
+  },
+  {
+    "jp": "飲",
+    "kana": null,
+    "reading": "no(mu) / in",
+    "onyomi": "in",
+    "kunyomi": "no(mu)",
+    "meaning": "to drink"
+  },
+  {
+    "jp": "駅",
+    "kana": null,
+    "reading": "– / eki",
+    "onyomi": "eki",
+    "kunyomi": "–",
+    "meaning": "station"
+  },
+  {
+    "jp": "花",
+    "kana": null,
+    "reading": "hana / ka",
+    "onyomi": "ka",
+    "kunyomi": "hana",
+    "meaning": "flower, blossom"
+  },
+  {
+    "jp": "会",
+    "kana": null,
+    "reading": "a(u) / kai, e",
+    "onyomi": "kai, e",
+    "kunyomi": "a(u)",
+    "meaning": "to meet, to come together, society"
+  },
+  {
+    "jp": "魚",
+    "kana": null,
+    "reading": "sakana, uo / gyo",
+    "onyomi": "gyo",
+    "kunyomi": "sakana, uo",
+    "meaning": "fish"
+  },
+  {
+    "jp": "空",
+    "kana": null,
+    "reading": "sora, a(keru), kara / kuu",
+    "onyomi": "kuu",
+    "kunyomi": "sora, a(keru), kara",
+    "meaning": "sky, to become free, empty"
+  },
+  {
+    "jp": "言",
+    "kana": null,
+    "reading": "i(u) / gen, gon",
+    "onyomi": "gen, gon",
+    "kunyomi": "i(u)",
+    "meaning": "word, to talk"
+  },
+  {
+    "jp": "古",
+    "kana": null,
+    "reading": "furu(i) / ko",
+    "onyomi": "ko",
+    "kunyomi": "furu(i)",
+    "meaning": "old, used"
+  },
+  {
+    "jp": "口",
+    "kana": null,
+    "reading": "kuchi / kou, ku",
+    "onyomi": "kou, ku",
+    "kunyomi": "kuchi",
+    "meaning": "mouth"
+  },
+  {
+    "jp": "耳",
+    "kana": null,
+    "reading": "mimi / ji",
+    "onyomi": "ji",
+    "kunyomi": "mimi",
+    "meaning": "ear"
+  },
+  {
+    "jp": "社",
+    "kana": null,
+    "reading": "yashiro / sha",
+    "onyomi": "sha",
+    "kunyomi": "yashiro",
+    "meaning": "shinto shrine, society"
+  },
+  {
+    "jp": "手",
+    "kana": null,
+    "reading": "te / shu",
+    "onyomi": "shu",
+    "kunyomi": "te",
+    "meaning": "hand"
+  },
+  {
+    "jp": "週",
+    "kana": null,
+    "reading": "– / shuu",
+    "onyomi": "shuu",
+    "kunyomi": "–",
+    "meaning": "week"
+  },
+  {
+    "jp": "少",
+    "kana": null,
+    "reading": "suko(shi), suku(nai) / shou",
+    "onyomi": "shou",
+    "kunyomi": "suko(shi), suku(nai)",
+    "meaning": "a little"
+  },
+  {
+    "jp": "新",
+    "kana": null,
+    "reading": "atara(shii), ara(ta), nii- / shin",
+    "onyomi": "shin",
+    "kunyomi": "atara(shii), ara(ta), nii-",
+    "meaning": "new"
+  },
+  {
+    "jp": "足",
+    "kana": null,
+    "reading": "ashi, ta(riru), ta(su) / soku",
+    "onyomi": "soku",
+    "kunyomi": "ashi, ta(riru), ta(su)",
+    "meaning": "foot, to be sufficient, to add"
+  },
+  {
+    "jp": "多",
+    "kana": null,
+    "reading": "oo(i) / ta",
+    "onyomi": "ta",
+    "kunyomi": "oo(i)",
+    "meaning": "many"
+  },
+  {
+    "jp": "店",
+    "kana": null,
+    "reading": "mise / ten",
+    "onyomi": "ten",
+    "kunyomi": "mise",
+    "meaning": "shop"
+  },
+  {
+    "jp": "買",
+    "kana": null,
+    "reading": "ka(u) / bai",
+    "onyomi": "bai",
+    "kunyomi": "ka(u)",
+    "meaning": "to buy"
+  },
+  {
+    "jp": "目",
+    "kana": null,
+    "reading": "me / moku",
+    "onyomi": "moku",
+    "kunyomi": "me",
+    "meaning": "eye"
+  },
+  {
+    "jp": "立",
+    "kana": null,
+    "reading": "ta(tsu), ta(teru) / ritsu",
+    "onyomi": "ritsu",
+    "kunyomi": "ta(tsu), ta(teru)",
+    "meaning": "to stand, to establish"
+  },
+  {
+    "jp": "六",
+    "kana": null,
+    "reading": "mutt(su), mu(tsu), mu, mui / roku",
+    "onyomi": "roku",
+    "kunyomi": "mutt(su), mu(tsu), mu, mui",
+    "meaning": "six"
+  }
+]

@@ -1,0 +1,212 @@
+[
+  {
+    "jp": "ちょっと",
+    "kana": null,
+    "reading": "chotto",
+    "meaning": "a little"
+  },
+  {
+    "jp": "丁度",
+    "kana": "ちょうど",
+    "reading": "choudo",
+    "meaning": "exactly"
+  },
+  {
+    "jp": "大丈夫",
+    "kana": "だいじょうぶ",
+    "reading": "daijoubu",
+    "meaning": "OK; okay; alright; problem free"
+  },
+  {
+    "jp": "だんだん",
+    "kana": null,
+    "reading": "dandan",
+    "meaning": "gradually"
+  },
+  {
+    "jp": "どう",
+    "kana": null,
+    "reading": "dou",
+    "meaning": "how; in what way; how about"
+  },
+  {
+    "jp": "どうも",
+    "kana": null,
+    "reading": "doumo",
+    "meaning": "thank you; thanks"
+  },
+  {
+    "jp": "どうして",
+    "kana": null,
+    "reading": "doushite",
+    "meaning": "why; for what reason; how"
+  },
+  {
+    "jp": "どうぞ",
+    "kana": null,
+    "reading": "douzo",
+    "meaning": "please"
+  },
+  {
+    "jp": "初めて",
+    "kana": "はじめて",
+    "reading": "hajimete",
+    "meaning": "for the first time"
+  },
+  {
+    "jp": "一人",
+    "kana": "ひとり",
+    "reading": "hitori",
+    "meaning": "one person; alone; single"
+  },
+  {
+    "jp": "一番",
+    "kana": "いちばん",
+    "reading": "ichiban",
+    "meaning": "number one; first; 1st, first place; best; most"
+  },
+  {
+    "jp": "いかが",
+    "kana": null,
+    "reading": "ikaga",
+    "meaning": "how; in what way; how about"
+  },
+  {
+    "jp": "いくら",
+    "kana": null,
+    "reading": "ikura",
+    "meaning": "how much?; how many?"
+  },
+  {
+    "jp": "いくつ",
+    "kana": null,
+    "reading": "ikutsu",
+    "meaning": "how many?,how old?"
+  },
+  {
+    "jp": "色々",
+    "kana": "いろいろ",
+    "reading": "iroiro",
+    "meaning": "various"
+  },
+  {
+    "jp": "一緒に",
+    "kana": "いっしょに",
+    "reading": "issho ni",
+    "meaning": "together"
+  },
+  {
+    "jp": "いつも",
+    "kana": null,
+    "reading": "itsumo",
+    "meaning": "always; usually; habitually"
+  },
+  {
+    "jp": "結構",
+    "kana": "けっこう",
+    "reading": "kekkou",
+    "meaning": "splendid, enough"
+  },
+  {
+    "jp": "まだ",
+    "kana": null,
+    "reading": "mada",
+    "meaning": "still; not yet"
+  },
+  {
+    "jp": "まだ～ていません",
+    "kana": null,
+    "reading": "mada ~te imasen",
+    "meaning": "have not yet ~"
+  },
+  {
+    "jp": "前に",
+    "kana": "まえに",
+    "reading": "mae ni",
+    "meaning": "before; in front of ~"
+  },
+  {
+    "jp": "真っ直ぐ",
+    "kana": "まっすぐ",
+    "reading": "massugu",
+    "meaning": "straight ahead,direct"
+  },
+  {
+    "jp": "みんな",
+    "kana": null,
+    "reading": "minna",
+    "meaning": "all; everyone; everybody"
+  },
+  {
+    "jp": "もっと",
+    "kana": null,
+    "reading": "motto",
+    "meaning": "more; longer; further"
+  },
+  {
+    "jp": "もう",
+    "kana": null,
+    "reading": "mou",
+    "meaning": "already; anymore; again; other"
+  },
+  {
+    "jp": "何故",
+    "kana": "なぜ",
+    "reading": "naze",
+    "meaning": "why; how"
+  },
+  {
+    "jp": "同じ",
+    "kana": "おなじ",
+    "reading": "onaji",
+    "meaning": "same"
+  },
+  {
+    "jp": "直ぐに",
+    "kana": "すぐに ",
+    "reading": "sugu ni",
+    "meaning": "immediately; right away; instantly"
+  },
+  {
+    "jp": "少し",
+    "kana": "すこし",
+    "reading": "sukoshi",
+    "meaning": "a little (bit); small quantity; few; short distance"
+  },
+  {
+    "jp": "多分",
+    "kana": "たぶん",
+    "reading": "tabun",
+    "meaning": "perhaps; probably"
+  },
+  {
+    "jp": "大変",
+    "kana": "たいへん",
+    "reading": "taihen",
+    "meaning": "very; greatly; terribly; serious; difficult"
+  },
+  {
+    "jp": "時々",
+    "kana": "ときどき",
+    "reading": "tokidoki",
+    "meaning": "sometimes; at times"
+  },
+  {
+    "jp": "とても",
+    "kana": null,
+    "reading": "totemo",
+    "meaning": "very; awfully; exceedingly"
+  },
+  {
+    "jp": "よく",
+    "kana": null,
+    "reading": "yoku",
+    "meaning": "often, well"
+  },
+  {
+    "jp": "ゆっくり",
+    "kana": null,
+    "reading": "yukkuri",
+    "meaning": "slowly"
+  }
+]

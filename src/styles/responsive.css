@@ -1,0 +1,54 @@
+/* Breakpoints and reduced-motion overrides.
+
+   Imported LAST on purpose: these rules override defaults set in the
+   per-screen stylesheets, so at equal specificity they have to come
+   after them to win. */
+
+@media (min-width: 481px) {
+  .home-header h1 { font-size: 48px; }
+  .home-tagline { font-size: 15px; }
+  .hanko-mark { width: 54px; height: 54px; }
+  .category-rail { max-height: none; overflow: visible; padding: 2px; }
+  .chip { padding: 13px 16px; }
+  .chip-jp { font-size: 14.5px; }
+  .chip-en { font-size: 11.5px; }
+  .mode-card { padding: 30px 20px; gap: 8px; }
+  .mode-title { font-size: 22px; }
+  .mode-desc { font-size: 13.5px; }
+  .mode-jp { font-size: 36px; }
+  .jp-display { font-size: 54px; }
+  .quiz-instruction { font-size: 13.5px; }
+  .choice-btn { padding: 20px 14px; font-size: 17px; }
+  .btn-primary, .btn-ghost { padding: 14px 24px; font-size: 15.5px; }
+  .setup-title, .category-config-label { font-size: 15px; }
+}
+
+@media (max-width: 480px) {
+  body { background: #eae3cf; }
+  #root { min-height: 100vh; min-height: 100dvh; padding: 0; align-items: stretch; }
+  .dojo-root {
+    max-width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .setup-screen-cta { padding-bottom: 110px; }
+  .setup-start {
+    position: fixed; left: 0; right: 0; bottom: 0; margin: 0; z-index: 30;
+    border-radius: 0; padding: 16px 22px calc(16px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -6px 18px rgba(42,39,35,0.18);
+  }
+}
+
+@media (max-width: 420px) {
+  .mode-grid { grid-template-columns: 1fr; }
+  .flash-back-jp { font-size: 24px; }
+  .flash-romaji { font-size: 26px; }
+  .jp-display { font-size: 36px; }
+  .home-header h1 { font-size: 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dojo-root * { animation: none !important; transition: none !important; }
+}
