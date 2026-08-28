@@ -1,5 +1,11 @@
 import { createClient } from "redis";
-import { LEADERBOARD_MAX_ENTRIES, leaderboardKey, meetsAccuracyBar } from "../shared/leaderboardRules.js";
+import {
+  LEADERBOARD_MAX_ENTRIES,
+  leaderboardKey,
+  meetsAccuracyBar,
+  isValidLeaderboardFilters,
+  isPlausibleTime,
+} from "../shared/leaderboardRules.js";
 
 // Vercel's own KV product is deprecated in favor of Redis integrations from
 // the Marketplace (Upstash and others), which land under either naming
@@ -51,10 +57,12 @@ export default async function handler(req, res) {
     if (!category || !count || !mode) {
       return res.status(400).json({ error: "Missing category, count, or mode" });
     }
+    if (!isValidLeaderboardFilters(category, count, mode)) {
+      return res.status(400).json({ error: "Unrecognized category, count, or mode" });
+    }
     const key = leaderboardKey(category, count, mode);
     try {
       const raw = await redis.zRangeWithScores(key, 0, LEADERBOARD_MAX_ENTRIES - 1);
-      console.log("REDIS GET RESULT:", raw);
       return res.status(200).json({ entries: parseZRangeResult(raw) });
     } catch (err) {
       console.error("leaderboard GET failed", err);
@@ -75,12 +83,21 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({ error: "Invalid payload" });
     }
+    if (!isValidLeaderboardFilters(category, count, mode)) {
+      return res.status(400).json({ error: "Unrecognized category, count, or mode" });
+    }
+    if (!Number.isInteger(total) || !Number.isInteger(score) || score < 0 || score > total || total <= 0 || total > Number(count)) {
+      return res.status(400).json({ error: "Score does not match question count" });
+    }
     // Never trust the client's own qualification check — enforce it here too.
     if (!meetsAccuracyBar(score, total)) {
       return res.status(400).json({ error: "Accuracy too low to qualify for the leaderboard" });
     }
     if (!Number.isFinite(timeSeconds) || timeSeconds <= 0) {
       return res.status(400).json({ error: "Invalid time" });
+    }
+    if (!isPlausibleTime(timeSeconds, total)) {
+      return res.status(400).json({ error: "Time is too fast to be plausible for this question count" });
     }
 
     const key = leaderboardKey(category, count, mode);
@@ -90,7 +107,6 @@ export default async function handler(req, res) {
     try {
       const rankingScore = (total - score) * 1000000 + timeSeconds;
       await redis.zAdd(key, { score: rankingScore, value: member });
-    console.log("SAVED TO REDIS:", key, member);
       // Keep only the fastest LEADERBOARD_MAX_ENTRIES — ranks beyond that
       // (the slower ones, since ascending order) get dropped.
       await redis.zRemRangeByRank(key, LEADERBOARD_MAX_ENTRIES, -1);
