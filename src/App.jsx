@@ -1009,10 +1009,16 @@ function MissedItemPopup({ item, onClose }) {
             )}
           </>
         ) : isKanaOnly ? (
-          <div className="popup-row">
-            <span className="popup-label">Romaji</span>
-            <span className="popup-kana">{item.reading}</span>
-          </div>
+          <>
+            <div className="popup-row">
+              <span className="popup-label">{item.category}</span>
+              <span className="popup-jp">{item.jp}</span>
+            </div>
+            <div className="popup-row">
+              <span className="popup-label">Romaji</span>
+              <span className="popup-kana">{item.reading}</span>
+            </div>
+          </>
         ) : (
           <>
             <div className="popup-row">
@@ -1708,18 +1714,18 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 }
 .choice-btn:hover:not(:disabled) { border-color: var(--indigo); }
 .choice-btn:disabled { cursor: default; opacity: 1; }
-.choice-btn:disabled.choice-dim { opacity: 0.3; }
+.choice-btn:disabled.choice-dim { opacity: 0.28; }
 .choice-correct {
-  background: rgba(76,122,74,0.22); border-color: var(--success); color: var(--success); font-weight: 800;
-  box-shadow: 0 4px 12px rgba(76,122,74,0.28);
+  background: var(--success); border-color: var(--success); color: #fff; font-weight: 800;
+  box-shadow: 0 6px 16px rgba(76,122,74,0.4);
 }
 .choice-wrong {
-  background: rgba(168,58,50,0.18); border-color: var(--hanko); color: var(--hanko); font-weight: 800;
-  box-shadow: 0 4px 12px rgba(168,58,50,0.22);
+  background: var(--hanko); border-color: var(--hanko); color: #fff; font-weight: 800;
+  box-shadow: 0 6px 16px rgba(168,58,50,0.35);
 }
 .choice-reveal {
-  background: rgba(76,122,74,0.22); border-color: var(--success); color: var(--success); font-weight: 800;
-  box-shadow: 0 4px 12px rgba(76,122,74,0.28);
+  background: var(--success); border-color: var(--success); color: #fff; font-weight: 800;
+  box-shadow: 0 6px 16px rgba(76,122,74,0.4);
 }
 
 .quiz-footer { margin-top: auto; text-align: center; font-size: 12px; color: var(--ink-soft); padding-top: 14px; }
