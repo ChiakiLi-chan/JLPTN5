@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Check, X, RotateCcw, Clock, Shuffle, ArrowLeft, Trophy, Layers, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, X, RotateCcw, ArrowLeft, Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { LEADERBOARD_MAX_ENTRIES, formatTime, leaderboardKey, meetsAccuracyBar, CATEGORY_ORDER, QUESTION_COUNT_OPTIONS, LEADERBOARD_CATEGORY_OPTIONS, LEADERBOARD_MODE_OPTIONS } from "../shared/leaderboardRules.js";
 
 /* ==============================================================
@@ -122,11 +122,7 @@ function buildKanjiReadingChoices(item, readingKind, allowTrap) {
   return shuffle([correct, ...distractors]);
 }
 
-/* Legacy simple mode picker, used only for Match (no prompt/answer config there) */
-function questionMode(item) {
-  if (!item.meaning) return "reading";
-  return Math.random() < 0.5 ? "meaning" : "reading";
-}
+/* ============================== HELPERS (continued) ============================== */
 
 function buildChoices(item, answerField, kanjiMixedTrap) {
   if (answerField === "onyomi" || answerField === "kunyomi") {
@@ -212,6 +208,7 @@ export default function N5Dojo() {
   const [selectedCategories, setSelectedCategories] = useState(() => CATEGORIES.map((c) => c.key));
   const [showFurigana, setShowFurigana] = useState(true);
   const [quizConfig, setQuizConfig] = useState(null);
+  const [flashConfig, setFlashConfig] = useState(null);
   const [lastResult, setLastResult] = useState(null);
 
   const pool = useMemo(
@@ -231,7 +228,7 @@ export default function N5Dojo() {
           showFurigana={showFurigana}
           setShowFurigana={setShowFurigana}
           onQuiz={() => setScreen("quizSetup")}
-          onMatch={() => setScreen("match")}
+          onFlashcards={() => setScreen("flashcardsSetup")}
           onViewLeaderboards={() => setScreen("leaderboards")}
           onEditCategories={() => setScreen("categoryPicker")}
         />
@@ -276,20 +273,19 @@ export default function N5Dojo() {
         <QuizResults result={lastResult} onRetry={() => setScreen("quizSetup")} onHome={() => setScreen("home")} />
       )}
 
-      {screen === "match" && (
-        <Match
+      {screen === "flashcardsSetup" && (
+        <FlashcardsSetup
           pool={pool}
-          showFurigana={showFurigana}
-          onExit={() => setScreen("home")}
-          onFinish={(res) => {
-            setLastResult(res);
-            setScreen("matchResults");
+          onBack={() => setScreen("home")}
+          onStart={(config) => {
+            setFlashConfig(config);
+            setScreen("flashcards");
           }}
         />
       )}
 
-      {screen === "matchResults" && (
-        <MatchResults result={lastResult} onRetry={() => setScreen("match")} onHome={() => setScreen("home")} />
+      {screen === "flashcards" && flashConfig && (
+        <Flashcards config={flashConfig} showFurigana={showFurigana} onExit={() => setScreen("home")} />
       )}
     </div>
   );
@@ -297,7 +293,7 @@ export default function N5Dojo() {
 
 /* ============================== HOME ============================== */
 
-function Home({ selectedCategories, pool, showFurigana, setShowFurigana, onQuiz, onMatch, onViewLeaderboards, onEditCategories }) {
+function Home({ selectedCategories, pool, showFurigana, setShowFurigana, onQuiz, onFlashcards, onViewLeaderboards, onEditCategories }) {
   const allSelected = selectedCategories.length === CATEGORIES.length;
   const furiganaRelevant = pool.some((i) => FURIGANA_CATEGORIES.has(i.category) && i.kana);
 
@@ -345,17 +341,17 @@ function Home({ selectedCategories, pool, showFurigana, setShowFurigana, onQuiz,
       </label>
 
       <section className="mode-grid">
+        <button className="mode-card mode-card-alt" onClick={onFlashcards} disabled={pool.length < 1}>
+          <span className="mode-jp">単語</span>
+          <span className="mode-title">Flashcards</span>
+          <span className="mode-desc">Flip through terms, front shown as kanji/kana or romaji.</span>
+          <span className="mode-go">Set up →</span>
+        </button>
         <button className="mode-card" onClick={onQuiz} disabled={pool.length < 2}>
           <span className="mode-jp">選択</span>
           <span className="mode-title">Quiz</span>
           <span className="mode-desc">Multiple choice — choose your prompt, answer, and question count.</span>
           <span className="mode-go">Set up →</span>
-        </button>
-        <button className="mode-card mode-card-alt" onClick={onMatch} disabled={pool.length < 3}>
-          <span className="mode-jp">対</span>
-          <span className="mode-title">Match</span>
-          <span className="mode-desc">Flip cards and pair each term with its answer.</span>
-          <span className="mode-go">Start →</span>
         </button>
       </section>
 
@@ -1063,149 +1059,131 @@ function QuizResults({ result, onRetry, onHome }) {
   );
 }
 
-/* ============================== MATCH ============================== */
+/* ============================== FLASHCARDS ============================== */
 
-function buildMatchCards(pool) {
-  const pairCount = Math.min(6, pool.length);
-  const chosen = shuffle(pool).slice(0, pairCount);
-  const cards = [];
-  chosen.forEach((item) => {
-    const mode = questionMode(item);
-    const pairId = item.id;
-    cards.push({ key: `${pairId}-jp`, pairId, face: item.jp, item, isJp: true, kind: "jp" });
-    cards.push({ key: `${pairId}-ans`, pairId, face: item[mode], item, isJp: false, kind: "ans" });
-  });
-  return shuffle(cards);
+/* Which field goes on the front of a flashcard. Kanji items and kana-only
+   items (Hiragana/Katakana) always front with the jp text — same rule as
+   the quiz. Everything else follows the chosen prompt type, resolved once
+   per card at build time so "Mixed" doesn't re-roll on every re-render. */
+function resolveFlashFront(item, promptType) {
+  if (KANA_ONLY_CATEGORIES.has(item.category) || item.category === "Kanji" || !item.meaning) return "jp";
+  const effective = promptType === "mixed" ? (Math.random() < 0.5 ? "kanji" : "romaji") : promptType;
+  return effective === "romaji" ? "reading" : "jp";
 }
 
-function Match({ pool, showFurigana, onExit, onFinish }) {
-  const [cards] = useState(() => buildMatchCards(pool));
-  const [flipped, setFlipped] = useState([]);
-  const [matched, setMatched] = useState(new Set());
-  const [moves, setMoves] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const [locked, setLocked] = useState(false);
-  const [wrongPair, setWrongPair] = useState([]);
+function buildFlashcards(pool, promptType) {
+  return shuffle(pool).map((item) => ({ item, front: resolveFlashFront(item, promptType) }));
+}
 
-  useEffect(() => {
-    if (matched.size === cards.length) return;
-    const t = setInterval(() => setSeconds((s) => s + 1), 1000);
-    return () => clearInterval(t);
-  }, [matched.size, cards.length]);
-
-  useEffect(() => {
-    if (matched.size === cards.length && cards.length > 0) {
-      const timeout = setTimeout(() => onFinish({ moves, seconds, pairs: cards.length / 2 }), 500);
-      return () => clearTimeout(timeout);
-    }
-  }, [matched, cards.length, moves, seconds, onFinish]);
-
-  const flip = (idx) => {
-    if (locked || flipped.includes(idx) || matched.has(idx)) return;
-    const next = [...flipped, idx];
-    setFlipped(next);
-    if (next.length === 2) {
-      setLocked(true);
-      setMoves((m) => m + 1);
-      const [a, b] = next;
-      if (cards[a].pairId === cards[b].pairId) {
-        setTimeout(() => {
-          setMatched((prev) => new Set(prev).add(a).add(b));
-          setFlipped([]);
-          setLocked(false);
-        }, 450);
-      } else {
-        setWrongPair(next);
-        setTimeout(() => {
-          setFlipped([]);
-          setWrongPair([]);
-          setLocked(false);
-        }, 700);
-      }
-    }
-  };
-
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
+function FlashcardsSetup({ pool, onBack, onStart }) {
+  const [promptType, setPromptType] = useState("kanji");
+  const canStart = pool.length >= 1;
 
   return (
-    <div className="screen match-screen">
+    <div className="screen setup-screen">
       <div className="quiz-topbar">
-        <button className="icon-btn" onClick={onExit} aria-label="Back to home">
+        <button className="icon-btn" onClick={onBack} aria-label="Back to home">
           <ArrowLeft size={18} />
         </button>
-        <div className="match-stats">
-          <span>
-            <Clock size={14} /> {mm}:{ss}
-          </span>
-          <span>
-            <Shuffle size={14} /> {moves} moves
-          </span>
-        </div>
-        <div className="score-pill">
-          {matched.size / 2}/{cards.length / 2}
+        <span className="setup-title">Flashcards</span>
+        <div className="score-pill">{pool.length}</div>
+      </div>
+
+      <div className="setup-body">
+        <div className="setup-group">
+          <span className="setup-label">Card front</span>
+          <div className="option-row segmented">
+            <button className={`option-btn${promptType === "kanji" ? " option-btn-active" : ""}`} onClick={() => setPromptType("kanji")}>
+              Kanji / Kana
+            </button>
+            <button className={`option-btn${promptType === "romaji" ? " option-btn-active" : ""}`} onClick={() => setPromptType("romaji")}>
+              Romaji
+            </button>
+            <button className={`option-btn${promptType === "mixed" ? " option-btn-active" : ""}`} onClick={() => setPromptType("mixed")}>
+              Mixed
+            </button>
+          </div>
+          <p className="setup-hint setup-hint-dim">Tap a card to flip it and reveal the reading and meaning. Kanji entries always front with the character.</p>
         </div>
       </div>
 
-      <div className="match-grid">
-        {cards.map((c, idx) => {
-          const isFlipped = flipped.includes(idx) || matched.has(idx);
-          const isMatched = matched.has(idx);
-          const isWrong = wrongPair.includes(idx);
-          return (
-            <button
-              key={c.key}
-              className={`match-card${isFlipped ? " is-flipped" : ""}${isMatched ? " is-matched" : ""}${isWrong ? " is-wrong" : ""}`}
-              onClick={() => flip(idx)}
-              disabled={isMatched}
-              aria-label={isFlipped ? c.face : "hidden card"}
-            >
-              <span className="match-card-inner">
-                <span className="match-face match-front">
-                  <Layers size={18} />
-                </span>
-                <span className="match-face match-back">
-                  {c.isJp ? <JpText item={c.item} showFurigana={showFurigana} /> : c.face}
-                </span>
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      <button className="btn-primary setup-start" disabled={!canStart} onClick={() => onStart({ cards: buildFlashcards(pool, promptType) })}>
+        Start flashcards →
+      </button>
     </div>
   );
 }
 
-function MatchResults({ result, onRetry, onHome }) {
-  const mm = String(Math.floor(result.seconds / 60)).padStart(2, "0");
-  const ss = String(result.seconds % 60).padStart(2, "0");
+function FlashcardBack({ item }) {
+  const isKanji = item.category === "Kanji";
+  const isKanaOnly = KANA_ONLY_CATEGORIES.has(item.category) || !item.meaning;
   return (
-    <div className="screen results-screen">
-      <Trophy size={34} className="results-icon" />
-      <h2>そろった — All matched!</h2>
-      <div className="match-summary">
-        <div>
-          <span className="summary-num">
-            {mm}:{ss}
-          </span>
-          <span className="summary-label">time</span>
+    <div className="flash-back">
+      <div className="flash-back-jp">{item.jp}</div>
+      {!isKanaOnly && item.reading && <div className="flash-back-reading">{item.reading}</div>}
+      {isKanji && (item.onyomi || item.kunyomi) && (
+        <div className="flash-back-yomi">
+          {item.onyomi && <span><b>On</b> {item.onyomi}</span>}
+          {item.kunyomi && <span><b>Kun</b> {item.kunyomi}</span>}
         </div>
-        <div>
-          <span className="summary-num">{result.moves}</span>
-          <span className="summary-label">moves</span>
+      )}
+      {item.meaning && <div className="flash-back-meaning">{item.meaning}</div>}
+    </div>
+  );
+}
+
+function Flashcards({ config, showFurigana, onExit }) {
+  const { cards } = config;
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+
+  const card = cards[index];
+  const goTo = (next) => {
+    setFlipped(false);
+    setIndex(next);
+  };
+
+  return (
+    <div className="screen flash-screen">
+      <div className="quiz-topbar">
+        <button className="icon-btn" onClick={onExit} aria-label="Back to home">
+          <ArrowLeft size={18} />
+        </button>
+        <div className="flash-progress">
+          <div className="flash-progress-bar" style={{ width: `${((index + 1) / cards.length) * 100}%` }} />
         </div>
-        <div>
-          <span className="summary-num">{result.pairs}</span>
-          <span className="summary-label">pairs</span>
-        </div>
+        <div className="score-pill">{index + 1}/{cards.length}</div>
       </div>
-      <div className="results-actions">
-        <button className="btn-primary" onClick={onRetry}>
-          <RotateCcw size={16} /> Play again
+
+      <button className={`flash-card${flipped ? " is-flipped" : ""}`} onClick={() => setFlipped((f) => !f)} aria-label={flipped ? "Show front" : "Reveal answer"}>
+        <div className="flash-card-inner">
+          <div className="flash-face flash-front">
+            {card.front === "jp" ? (
+              <span className="jp-display flash-jp"><JpText item={card.item} showFurigana={showFurigana} /></span>
+            ) : (
+              <span className="flash-romaji">{card.item.reading}</span>
+            )}
+          </div>
+          <div className="flash-face flash-back-face">
+            <FlashcardBack item={card.item} />
+          </div>
+        </div>
+      </button>
+      <p className="flash-hint">Tap the card to flip</p>
+
+      <div className="flash-nav">
+        <button className="btn-ghost" onClick={() => goTo(index - 1)} disabled={index === 0}>
+          <ChevronLeft size={16} /> Prev
         </button>
-        <button className="btn-ghost" onClick={onHome}>
-          Home
-        </button>
+        {index < cards.length - 1 ? (
+          <button className="btn-primary" onClick={() => goTo(index + 1)}>
+            Next <ChevronRight size={16} />
+          </button>
+        ) : (
+          <button className="btn-primary" onClick={onExit}>
+            Done
+          </button>
+        )}
       </div>
     </div>
   );
@@ -1476,7 +1454,7 @@ body {
 ruby { ruby-position: over; }
 rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: var(--ink-soft); }
 .jp-display rt { font-size: 16px; letter-spacing: 0; }
-.match-back rt { font-size: 9px; }
+.flash-jp rt { font-size: 12px; }
 
 .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
 .mode-card {
@@ -1559,7 +1537,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 }
 .setup-start { width: 100%; justify-content: center; margin-top: auto; }
 
-/* ---------- Quiz / Match top bar ---------- */
+/* ---------- Quiz top bar ---------- */
 .quiz-topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .icon-btn { background: transparent; border: 1px solid rgba(42,39,35,0.16); border-radius: 10px; padding: 7px; display: flex; color: var(--ink); }
 .icon-btn:hover { background: var(--paper-deep); }
@@ -1568,8 +1546,8 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .dot-done { background: var(--indigo); }
 .dot-current { background: var(--gold); }
 .score-pill { background: var(--indigo); color: #fff; font-weight: 800; font-size: 13px; padding: 6px 12px; border-radius: 999px; min-width: 34px; text-align: center; }
-.match-stats { flex: 1; display: flex; gap: 14px; font-size: 12.5px; color: var(--ink-soft); align-items: center; }
-.match-stats span { display: flex; align-items: center; gap: 4px; }
+.flash-progress { flex: 1; height: 5px; border-radius: 3px; background: rgba(42,39,35,0.14); overflow: hidden; }
+.flash-progress-bar { height: 100%; background: var(--indigo); border-radius: 3px; transition: width .2s ease; }
 
 /* ---------- Quiz card ---------- */
 .quiz-card {
@@ -1612,17 +1590,29 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 
 .quiz-footer { margin-top: auto; text-align: center; font-size: 12px; color: var(--ink-soft); padding-top: 14px; }
 
-/* ---------- Match grid ---------- */
-.match-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; flex: 1; align-content: start; }
-.match-card { background: transparent; border: none; padding: 0; aspect-ratio: 3/4; perspective: 700px; }
-.match-card-inner { display: block; width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(.3,.8,.4,1); }
-.is-flipped .match-card-inner { transform: rotateY(180deg); }
-.match-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 4px; text-align: center; }
-.match-front { background: var(--indigo); color: rgba(255,255,255,0.8); border: 1px solid var(--indigo-deep); }
-.match-back { background: #fff; border: 1.5px solid rgba(42,39,35,0.16); transform: rotateY(180deg); font-family: 'Shippori Mincho', serif; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; word-break: break-word; }
-.is-matched .match-back { background: rgba(76,122,74,0.14); border-color: var(--success); color: var(--success); }
-.is-wrong .match-back { background: rgba(168,58,50,0.1); border-color: var(--hanko); color: var(--hanko); }
-.is-matched { opacity: 0.55; }
+/* ---------- Flashcard ---------- */
+.flash-card { background: transparent; border: none; padding: 0; flex: 1; min-height: 220px; perspective: 1200px; margin-bottom: 14px; }
+.flash-card-inner { display: block; width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(.3,.8,.4,1); }
+.is-flipped .flash-card-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; overflow-y: auto;
+}
+.flash-front { background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.12); }
+.flash-back-face {
+  background: #fff; border: 1.5px solid rgba(42,39,35,0.14); transform: rotateY(180deg);
+  flex-direction: column; gap: 10px;
+}
+.flash-romaji { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 32px; font-weight: 800; color: var(--ink); letter-spacing: 0.02em; word-break: break-word; }
+.flash-back { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.flash-back-jp { font-family: 'Shippori Mincho', serif; font-size: 30px; font-weight: 700; color: var(--ink); word-break: break-word; }
+.flash-back-reading { font-size: 14px; color: var(--ink-soft); letter-spacing: 0.03em; }
+.flash-back-yomi { display: flex; gap: 14px; font-size: 12.5px; color: var(--ink-soft); }
+.flash-back-yomi b { color: var(--indigo-deep); font-weight: 800; }
+.flash-back-meaning { font-size: 16px; font-weight: 700; color: var(--indigo-deep); margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(42,39,35,0.1); width: 100%; }
+.flash-hint { text-align: center; font-size: 11.5px; color: var(--ink-soft); margin: 0 0 14px; }
+.flash-nav { display: flex; gap: 10px; margin-top: auto; }
+.flash-nav .btn-ghost, .flash-nav .btn-primary { flex: 1; justify-content: center; }
 
 /* ---------- Results ---------- */
 .results-screen { align-items: center; text-align: center; justify-content: center; }
@@ -1711,8 +1701,6 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
   font-size: 13px; background: var(--paper-deep); padding: 5px 12px; border-radius: 999px; white-space: nowrap;
 }
 
-.match-summary { display: flex; gap: 28px; margin: 8px 0 22px; }
-.match-summary > div { display: flex; flex-direction: column; align-items: center; }
 .summary-num { font-size: 26px; font-weight: 900; color: var(--indigo); font-family: 'Shippori Mincho', serif; }
 .summary-label { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
 
@@ -1756,7 +1744,8 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 
 @media (max-width: 420px) {
   .mode-grid { grid-template-columns: 1fr; }
-  .match-grid { grid-template-columns: repeat(3, 1fr); }
+  .flash-back-jp { font-size: 24px; }
+  .flash-romaji { font-size: 26px; }
   .jp-display { font-size: 36px; }
   .home-header h1 { font-size: 32px; }
 }
