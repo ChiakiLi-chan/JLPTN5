@@ -1309,7 +1309,7 @@ function LeaderboardBrowser({ onBack }) {
               <div className="option-row segmented lb-compact-options">
                 {LEADERBOARD_MODE_OPTIONS.map((m) => (
                   <button key={m.key} className={`option-btn${mode === m.key ? " option-btn-active" : ""}`} onClick={() => setMode(m.key)}>
-                    {m.label}
+                    {m.key === "normal" ? "Normal" : m.key === "easy" ? "Easy" : "Hard"}
                   </button>
                 ))}
               </div>
