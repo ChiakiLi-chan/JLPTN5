@@ -951,12 +951,13 @@ function Quiz({ config, showFurigana, onExit, onFinish }) {
         {q.choices.map((choice) => {
           const isSelected = selected === choice;
           const isAnswer = feedback && choice === q.item[q.answerField];
+          const isDimmed = feedback && !isSelected && !isAnswer;
           return (
             <button
               key={choice}
               className={`choice-btn${isSelected && feedback === "correct" ? " choice-correct" : ""}${
                 isSelected && feedback === "wrong" ? " choice-wrong" : ""
-              }${isAnswer && !isSelected ? " choice-reveal" : ""}`}
+              }${isAnswer && !isSelected ? " choice-reveal" : ""}${isDimmed ? " choice-dim" : ""}`}
               onClick={() => choose(choice)}
               disabled={!!feedback}
             >
@@ -975,6 +976,36 @@ function Quiz({ config, showFurigana, onExit, onFinish }) {
   );
 }
 
+function MissedItemPopup({ item, onClose }) {
+  const isKanji = item.category === "Kanji";
+  const hasKanjiForm = isKanji || (item.kana && item.kana !== item.jp);
+  return (
+    <div className="popup-backdrop" onClick={onClose}>
+      <div className="popup-card" onClick={(e) => e.stopPropagation()}>
+        <button className="popup-close" onClick={onClose} aria-label="Close">
+          <X size={16} />
+        </button>
+        {hasKanjiForm && (
+          <div className="popup-row">
+            <span className="popup-label">Kanji</span>
+            <span className="popup-jp">{item.jp}</span>
+          </div>
+        )}
+        <div className="popup-row">
+          <span className="popup-label">Kana</span>
+          <span className="popup-kana">{item.kana || item.jp}</span>
+        </div>
+        {item.meaning && (
+          <div className="popup-row">
+            <span className="popup-label">Meaning</span>
+            <span className="popup-meaning">{item.meaning}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function QuizResults({ result, onRetry, onHome }) {
   const pct = Math.round((result.score / result.total) * 100);
   const verdict = pct === 100 ? "合格 — Perfect!" : pct >= 70 ? "合格 — Well done" : "もう一度 — Keep practicing";
@@ -986,6 +1017,7 @@ function QuizResults({ result, onRetry, onHome }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [submittedInfo, setSubmittedInfo] = useState(null); // { name, timeSeconds } for highlighting the new row
+  const [popupItem, setPopupItem] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -1037,15 +1069,17 @@ function QuizResults({ result, onRetry, onHome }) {
         <div className="missed-list">
           <p className="missed-title">Review</p>
           {result.missed.map((m, i) => (
-            <div className="missed-row" key={i}>
+            <button className="missed-row" key={i} onClick={() => setPopupItem(m.item)}>
               <span className="missed-jp">
                 {m.promptField === "jp" ? m.item.jp : m.promptField === "kana" ? m.item.kana || m.item.jp : m.item[m.promptField]}
               </span>
               <span className="missed-answer">{m.item[m.answerField]}</span>
-            </div>
+            </button>
           ))}
         </div>
       )}
+
+      {popupItem && <MissedItemPopup item={popupItem} onClose={() => setPopupItem(null)} />}
 
       <div className="leaderboard-panel">
         <p className="missed-title">Leaderboard — {result.categoryKey} · {result.count}Q · {modeLabel}</p>
@@ -1639,10 +1673,11 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .choice-btn {
   background: #fff; border: 1.5px solid rgba(42,39,35,0.14); border-radius: 12px; padding: 14px 12px;
   font-size: 15px; font-weight: 600; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: border-color .12s ease, background .12s ease; text-align: center; line-height: 1.3;
+  transition: border-color .12s ease, background .12s ease, opacity .15s ease; text-align: center; line-height: 1.3;
 }
 .choice-btn:hover:not(:disabled) { border-color: var(--indigo); }
 .choice-btn:disabled { cursor: default; opacity: 1; }
+.choice-btn:disabled.choice-dim { opacity: 0.35; }
 .choice-correct { background: rgba(76,122,74,0.14); border-color: var(--success); color: var(--success); }
 .choice-wrong { background: rgba(168,58,50,0.1); border-color: var(--hanko); color: var(--hanko); }
 .choice-reveal { border-color: var(--success); color: var(--success); }
@@ -1681,10 +1716,34 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .results-of { font-size: 24px; color: var(--ink-soft); }
 .missed-list { width: 100%; max-width: 320px; margin-top: 18px; background: var(--paper-deep); border-radius: 12px; padding: 12px 16px; max-height: 220px; overflow-y: auto; }
 .missed-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); font-weight: 700; margin: 0 0 8px; }
-.missed-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(42,39,35,0.08); font-size: 14px; gap: 10px; }
+.missed-row {
+  display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 4px;
+  border-bottom: 1px solid rgba(42,39,35,0.08); font-size: 14px; gap: 10px;
+  background: none; border-left: none; border-right: none; border-top: none; text-align: left; border-radius: 6px;
+  transition: background .12s ease;
+}
+.missed-row:hover { background: rgba(42,39,35,0.05); }
 .missed-row:last-child { border-bottom: none; }
 .missed-jp { font-family: 'Shippori Mincho', serif; font-weight: 700; }
 .missed-answer { color: var(--ink-soft); text-align: right; }
+
+.popup-backdrop {
+  position: fixed; inset: 0; background: rgba(20,18,14,0.5); display: flex; align-items: center; justify-content: center;
+  padding: 24px; z-index: 100;
+}
+.popup-card {
+  position: relative; background: var(--paper); border-radius: 16px; padding: 26px 22px; max-width: 320px; width: 100%;
+  display: flex; flex-direction: column; gap: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.popup-close {
+  position: absolute; top: 10px; right: 10px; background: var(--paper-deep); border: none; border-radius: 50%;
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--ink-soft);
+}
+.popup-row { display: flex; flex-direction: column; gap: 4px; }
+.popup-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.popup-jp { font-family: 'Shippori Mincho', serif; font-size: 34px; font-weight: 700; color: var(--ink); word-break: break-word; }
+.popup-kana { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 20px; font-weight: 700; color: var(--indigo-deep); }
+.popup-meaning { font-size: 15px; font-weight: 600; color: var(--ink); }
 .results-time { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
 
 .leaderboard-panel { width: 100%; max-width: 340px; margin-top: 18px; background: var(--paper-deep); border-radius: 12px; padding: 12px 16px; }
