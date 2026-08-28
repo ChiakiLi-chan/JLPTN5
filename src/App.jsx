@@ -640,10 +640,12 @@ function QuizSetup({ pool, onBack, onStart }) {
     nonKanjiCategories.forEach((c) => {
       map[c] = defaultOtherConfig();
     });
+    kanaOnlyPresent.forEach((c) => {
+      map[c] = defaultKanaConfig();
+    });
     return map;
   });
   const [kanjiConfig, setKanjiConfig] = useState(defaultKanjiConfig);
-  const [kanaConfig, setKanaConfig] = useState(defaultKanaConfig);
 
   const needsOverflowChoice = pool.length < count;
 
@@ -659,24 +661,28 @@ function QuizSetup({ pool, onBack, onStart }) {
     nonKanjiCategories.forEach((cat) => {
       finalConfig[cat] = customizePerCategory ? perCategoryConfig[cat] || defaultOtherConfig() : sharedConfig;
     });
-    if (kanjiPresent) finalConfig["Kanji"] = kanjiConfig;
     kanaOnlyPresent.forEach((cat) => {
-      finalConfig[cat] = kanaConfig;
+      finalConfig[cat] = perCategoryConfig[cat] || defaultKanaConfig();
     });
+    if (kanjiPresent) finalConfig["Kanji"] = kanjiConfig;
     onStart({ pool, count, overflowChoice, perCategoryConfig: finalConfig, mode, timeLimitSeconds });
   };
 
   // Slides for the swipeable carousel: each non-Kanji category (only when
-  // "Customize each" is on) plus Kanji (always its own slide, if present).
+  // "Customize each" is on), plus Hiragana/Katakana and Kanji — those three
+  // always get their own slide since they don't share the meaning-based
+  // config shape the other categories use.
   const slides = [];
   if (customizePerCategory) {
     nonKanjiCategories.forEach((cat) => slides.push({ key: cat, isKanji: false }));
   }
+  kanaOnlyPresent.forEach((cat) => slides.push({ key: cat, isKanaOnly: true }));
   if (kanjiPresent) slides.push({ key: "Kanji", isKanji: true });
 
   const renderSlide = (s) => {
     const isKanji = s.isKanji;
-    const cfg = isKanji ? kanjiConfig : perCategoryConfig[s.key] || defaultOtherConfig();
+    const isKanaOnly = s.isKanaOnly;
+    const cfg = isKanji ? kanjiConfig : perCategoryConfig[s.key] || (isKanaOnly ? defaultKanaConfig() : defaultOtherConfig());
     const onChange = isKanji
       ? (patch) => setKanjiConfig((prev) => ({ ...prev, ...patch }))
       : (patch) => setPerCategoryConfig((prev) => ({ ...prev, [s.key]: { ...prev[s.key], ...patch } }));
@@ -686,7 +692,7 @@ function QuizSetup({ pool, onBack, onStart }) {
         <span className="category-config-label">
           {s.key} <span className="setup-hint-dim">({itemCount})</span>
         </span>
-        <PromptAnswerFields cfg={cfg} isKanji={isKanji} onChange={onChange} />
+        <PromptAnswerFields cfg={cfg} isKanji={isKanji} isKanaOnly={isKanaOnly} onChange={onChange} />
       </div>
     );
   };
@@ -759,13 +765,6 @@ function QuizSetup({ pool, onBack, onStart }) {
             </>
           )}
         </div>
-
-        {kanaOnlyPresent.length > 0 && (
-          <div className="setup-group category-config">
-            <span className="category-config-label">{kanaOnlyPresent.join(", ")}</span>
-            <PromptAnswerFields cfg={kanaConfig} isKanaOnly onChange={(patch) => setKanaConfig((prev) => ({ ...prev, ...patch }))} />
-          </div>
-        )}
 
         {nonKanjiCategories.length >= 2 && (
           <div className="setup-group">
