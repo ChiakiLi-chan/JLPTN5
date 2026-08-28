@@ -1103,12 +1103,12 @@ function QuizResults({ result, onRetry, onHome }) {
 
 /* ============================== FLASHCARDS ============================== */
 
-/* Which field goes on the front of a flashcard. Kanji items and kana-only
-   items (Hiragana/Katakana) always front with the jp text — same rule as
-   the quiz. Everything else follows the chosen prompt type, resolved once
-   per card at build time so "Mixed" doesn't re-roll on every re-render. */
+/* Which field goes on the front of a flashcard. Only actual Kanji items
+   always front with the character. Kana-only categories (Hiragana/Katakana)
+   now follow the same shared prompt-type toggle as everything else, resolved
+   once per card at build time so "Mixed" doesn't re-roll on every re-render. */
 function resolveFlashFront(item, promptType) {
-  if (KANA_ONLY_CATEGORIES.has(item.category) || item.category === "Kanji" || !item.meaning) return "jp";
+  if (item.category === "Kanji") return "jp";
   const effective = promptType === "mixed" ? (Math.random() < 0.5 ? "kanji" : "romaji") : promptType;
   return effective === "romaji" ? "reading" : "jp";
 }
@@ -1158,11 +1158,10 @@ function FlashcardsSetup({ pool, onBack, onStart }) {
 
 function FlashcardBack({ item }) {
   const isKanji = item.category === "Kanji";
-  const isKanaOnly = KANA_ONLY_CATEGORIES.has(item.category) || !item.meaning;
   return (
     <div className="flash-back">
       <div className="flash-back-jp">{item.jp}</div>
-      {!isKanaOnly && item.reading && <div className="flash-back-reading">{item.reading}</div>}
+      {item.reading && <div className="flash-back-reading">{item.reading}</div>}
       {isKanji && (item.onyomi || item.kunyomi) && (
         <div className="flash-back-yomi">
           {item.onyomi && <span><b>On</b> {item.onyomi}</span>}
@@ -1197,7 +1196,7 @@ function Flashcards({ config, showFurigana, onExit }) {
         <div className="score-pill">{index + 1}/{cards.length}</div>
       </div>
 
-      <button className={`flash-card${flipped ? " is-flipped" : ""}`} onClick={() => setFlipped((f) => !f)} aria-label={flipped ? "Show front" : "Reveal answer"}>
+      <button key={index} className={`flash-card${flipped ? " is-flipped" : ""}`} onClick={() => setFlipped((f) => !f)} aria-label={flipped ? "Show front" : "Reveal answer"}>
         <div className="flash-card-inner">
           <div className="flash-face flash-front">
             {card.front === "jp" ? (
