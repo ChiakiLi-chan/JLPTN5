@@ -13,17 +13,21 @@
    screen the player is on.
    ============================================================== */
 
-import { LEADERBOARD_MAX_ENTRIES, meetsAccuracyBar } from "../../shared/leaderboardRules.js";
+import { LEADERBOARD_MAX_ENTRIES, meetsAccuracyBar, rankingScore } from "../../shared/leaderboardRules.js";
 
+/* Returns the entries on success, or null if the board couldn't be reached.
+   The distinction matters: an empty board means "any qualifying score gets
+   on", while an unreachable one means we don't know — and treating the
+   second as the first would prompt for a name we then can't save. */
 export async function loadLeaderboard(category, count, mode) {
   try {
     const params = new URLSearchParams({ category, count: String(count), mode });
     const res = await fetch(`/api/leaderboard?${params.toString()}`);
-    if (!res.ok) return [];
+    if (!res.ok) return null;
     const data = await res.json();
-    return Array.isArray(data.entries) ? data.entries : [];
+    return Array.isArray(data.entries) ? data.entries : null;
   } catch (e) {
-    return [];
+    return null;
   }
 }
 
@@ -64,11 +68,29 @@ export async function submitScore(category, count, mode, entry) {
   }
 }
 
-// Client-side pre-check only, so the name-entry form doesn't flash up and
-// then get rejected — the server enforces this same rule independently and
-// is the actual source of truth.
+/* Whether this run would actually make the board — i.e. whether it's worth
+   asking the player for a name at all.
+
+   Ranks against the same formula the server sorts by, so the answer here
+   matches what the server will do. Comparing on time alone (as this used to)
+   meant a fast 6/10 could beat a slow 10/10 on the client, get accepted, and
+   then be trimmed off the board immediately, leaving the player thinking
+   their score had saved.
+
+   The server enforces all of this independently and remains the source of
+   truth; this only decides whether to show the form. */
 export function qualifiesForLeaderboard(leaderboard, timeSeconds, score, total) {
   if (!meetsAccuracyBar(score, total)) return false;
+  // Board unreachable — don't offer a prompt we can't honour.
+  if (!Array.isArray(leaderboard)) return false;
   if (leaderboard.length < LEADERBOARD_MAX_ENTRIES) return true;
-  return timeSeconds < leaderboard[leaderboard.length - 1].timeSeconds;
+
+  const mine = rankingScore(score, total, timeSeconds);
+  const worst = leaderboard[leaderboard.length - 1];
+  // A stored entry missing its score/total is from an older submission;
+  // fall back to comparing time so it can still be beaten.
+  const theirs = Number.isFinite(worst?.score) && Number.isFinite(worst?.total)
+    ? rankingScore(worst.score, worst.total, worst.timeSeconds)
+    : worst.timeSeconds;
+  return mine < theirs;
 }

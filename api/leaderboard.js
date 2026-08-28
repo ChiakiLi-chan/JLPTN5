@@ -5,6 +5,7 @@ import {
   meetsAccuracyBar,
   isValidLeaderboardFilters,
   isPlausibleTime,
+  rankingScore,
   RATE_LIMIT_SUBMIT,
   RATE_LIMIT_READ,
   GLOBAL_DAILY_WRITE_BUDGET,
@@ -72,7 +73,11 @@ function parseZRangeResult(raw) {
 
   for (let i = 0; i < raw.length; i += 2) {
     try {
-      entries.push({ ...JSON.parse(raw[i]), timeSeconds: Number(raw[i + 1]) });
+      // Take timeSeconds from the stored member, NOT from raw[i + 1]: that's
+      // the sorted-set score, which encodes accuracy as well as time and
+      // would render as a nonsense duration for any imperfect run.
+      const data = JSON.parse(raw[i]);
+      entries.push({ ...data, timeSeconds: Number(data.timeSeconds) });
     } catch {
       // skip a corrupt entry rather than failing the whole request
     }
@@ -184,8 +189,7 @@ export default async function handler(req, res) {
     const member = JSON.stringify({ name: safeName, date: Date.now(), score, total, timeSeconds });
 
     try {
-      const rankingScore = (total - score) * 1000000 + timeSeconds;
-      await redis.zAdd(key, { score: rankingScore, value: member });
+      await redis.zAdd(key, { score: rankingScore(score, total, timeSeconds), value: member });
       // Keep only the fastest LEADERBOARD_MAX_ENTRIES — ranks beyond that
       // (the slower ones, since ascending order) get dropped.
       await redis.zRemRangeByRank(key, LEADERBOARD_MAX_ENTRIES, -1);

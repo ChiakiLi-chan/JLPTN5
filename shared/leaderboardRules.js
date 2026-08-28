@@ -51,6 +51,19 @@ export function meetsAccuracyBar(score, total) {
   return total > 0 && score / total >= LEADERBOARD_MIN_ACCURACY;
 }
 
+/* THE ranking rule — accuracy first, then time. Lower sorts better, which
+   is what Redis sorted sets want.
+
+   Both sides must use this exact formula. The server uses it to store the
+   sort score; the client uses it to decide whether to even offer the name
+   prompt. When the client used a time-only comparison instead, a fast but
+   inaccurate run looked like it qualified, the player typed their name, the
+   server accepted it, and then trimmed it straight back off the board — a
+   score that reported "saved" and never appeared. */
+export function rankingScore(score, total, timeSeconds) {
+  return (total - score) * 1000000 + timeSeconds;
+}
+
 // Rejects anything the client couldn't legitimately have produced — an
 // unrecognized category/count/mode combo, which would otherwise let a
 // direct API call spam arbitrary Redis keys.

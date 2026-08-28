@@ -84,17 +84,25 @@ export default function QuizResults({ result, onRetry, onHome }) {
   const [submittedInfo, setSubmittedInfo] = useState(null); // { name, timeSeconds } for highlighting the new row
   const [popupItem, setPopupItem] = useState(null);
 
+  const [loadingBoard, setLoadingBoard] = useState(true);
+
   useEffect(() => {
     let cancelled = false;
     loadLeaderboard(result.categoryKey, result.count, result.mode).then((entries) => {
-      if (!cancelled) setLeaderboard(entries);
+      if (cancelled) return;
+      setLeaderboard(entries); // null if the board couldn't be reached
+      setLoadingBoard(false);
     });
     return () => {
       cancelled = true;
     };
   }, [key, result.categoryKey, result.count, result.mode]);
 
-  const qualifies = leaderboard != null && qualifiesForLeaderboard(leaderboard, result.timeSeconds, result.score, result.total);
+  /* Only offer the name prompt when the score would genuinely place. This
+     ranks by the same accuracy-then-time rule the server sorts on, so a run
+     that can't make the top 10 never asks for a name it can't keep — and a
+     board that failed to load doesn't get mistaken for an empty one. */
+  const qualifies = !loadingBoard && qualifiesForLeaderboard(leaderboard, result.timeSeconds, result.score, result.total);
 
   const handleSubmitName = async () => {
     const trimmed = name.trim().slice(0, 24) || "Anonymous";
@@ -148,8 +156,10 @@ export default function QuizResults({ result, onRetry, onHome }) {
 
       <div className="leaderboard-panel">
         <p className="missed-title">Leaderboard — {result.categoryKey} · {result.count}Q · {modeLabel}</p>
-        {leaderboard === null ? (
+        {loadingBoard ? (
           <p className="setup-hint setup-hint-dim">Loading…</p>
+        ) : leaderboard === null ? (
+          <p className="setup-hint setup-hint-dim">Couldn't load the leaderboard right now — your run still counts, it just can't be posted.</p>
         ) : (
           <>
             {qualifies && !submitted && (
