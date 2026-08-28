@@ -951,13 +951,12 @@ function Quiz({ config, showFurigana, onExit, onFinish }) {
         {q.choices.map((choice) => {
           const isSelected = selected === choice;
           const isAnswer = feedback && choice === q.item[q.answerField];
-          const isDimmed = feedback && !isSelected && !isAnswer;
           return (
             <button
               key={choice}
               className={`choice-btn${isSelected && feedback === "correct" ? " choice-correct" : ""}${
                 isSelected && feedback === "wrong" ? " choice-wrong" : ""
-              }${isAnswer && !isSelected ? " choice-reveal" : ""}${isDimmed ? " choice-dim" : ""}`}
+              }${isAnswer && !isSelected ? " choice-reveal" : ""}`}
               onClick={() => choose(choice)}
               disabled={!!feedback}
             >
@@ -1714,7 +1713,6 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 }
 .choice-btn:hover:not(:disabled) { border-color: var(--indigo); }
 .choice-btn:disabled { cursor: default; opacity: 1; }
-.choice-btn:disabled.choice-dim { opacity: 0.28; }
 .choice-correct {
   background: var(--success); border-color: var(--success); color: #fff; font-weight: 800;
   box-shadow: 0 6px 16px rgba(76,122,74,0.4);
