@@ -694,7 +694,7 @@ function QuizSetup({ pool, onBack, onStart }) {
   };
 
   return (
-    <div className="screen setup-screen">
+    <div className="screen setup-screen setup-screen-cta">
       <div className="quiz-topbar">
         <button className="icon-btn" onClick={onBack} aria-label="Back to home">
           <ArrowLeft size={18} />
@@ -1136,7 +1136,7 @@ function FlashcardsSetup({ pool, onBack, onStart }) {
   const canStart = pool.length >= 1;
 
   return (
-    <div className="screen setup-screen">
+    <div className="screen setup-screen setup-screen-cta">
       <div className="quiz-topbar">
         <button className="icon-btn" onClick={onBack} aria-label="Back to home">
           <ArrowLeft size={18} />
@@ -1539,7 +1539,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 /* ---------- Setup screen ---------- */
 .setup-title { flex: 1; font-weight: 800; font-size: 14px; color: var(--indigo-deep); }
 .setup-body { display: flex; flex-direction: column; gap: 16px; }
-.setup-body-scroll { overflow-y: auto; max-height: 440px; padding-right: 2px; }
+.setup-body-scroll { padding-right: 2px; }
 .setup-group { display: flex; flex-direction: column; gap: 8px; }
 .category-config { background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.1); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 .category-config-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 13px; font-weight: 700; color: var(--indigo-deep); padding-bottom: 8px; border-bottom: 1px solid rgba(42,39,35,0.12); }
@@ -1770,7 +1770,6 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .btn-ghost:hover { border-color: var(--indigo); color: var(--indigo); }
 
 @media (min-width: 481px) {
-  .setup-body-scroll { max-height: none; overflow: visible; padding-right: 0; }
   .home-header h1 { font-size: 48px; }
   .home-tagline { font-size: 15px; }
   .hanko-mark { width: 54px; height: 54px; }
@@ -1798,6 +1797,12 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
     min-height: 100dvh;
     border-radius: 0;
     box-shadow: none;
+  }
+  .setup-screen-cta { padding-bottom: 110px; }
+  .setup-start {
+    position: fixed; left: 0; right: 0; bottom: 0; margin: 0; z-index: 30;
+    border-radius: 0; padding: 16px 22px calc(16px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -6px 18px rgba(42,39,35,0.18);
   }
 }
 
