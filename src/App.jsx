@@ -1591,7 +1591,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .quiz-footer { margin-top: auto; text-align: center; font-size: 12px; color: var(--ink-soft); padding-top: 14px; }
 
 /* ---------- Flashcard ---------- */
-.flash-card { background: transparent; border: none; padding: 0; display: block; width: 100%; flex: 1; min-height: 360px; perspective: 1200px; margin-bottom: 14px; }
+.flash-card { background: transparent; border: none; padding: 0; display: block; width: 100%; flex: 1; min-height: 50%; perspective: 1200px; margin-bottom: 14px; }
 .flash-card-inner { display: block; width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(.3,.8,.4,1); }
 .is-flipped .flash-card-inner { transform: rotateY(180deg); }
 .flash-face {
