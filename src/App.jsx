@@ -1114,13 +1114,17 @@ function QuizResults({ result, onRetry, onHome }) {
 /* ============================== FLASHCARDS ============================== */
 
 /* Which field goes on the front of a flashcard. Only actual Kanji items
-   always front with the character. Kana-only categories (Hiragana/Katakana)
-   now follow the same shared prompt-type toggle as everything else, resolved
-   once per card at build time so "Mixed" doesn't re-roll on every re-render. */
+   always front with the character. Everything else follows the chosen
+   prompt type — Kanji, Kana, Romaji, or Mixed (random across all three) —
+   resolved once per card at build time so "Mixed" doesn't re-roll on every
+   re-render. */
+const FLASH_MIXED_POOL = ["kanji", "kana", "romaji"];
 function resolveFlashFront(item, promptType) {
   if (item.category === "Kanji") return "jp";
-  const effective = promptType === "mixed" ? (Math.random() < 0.5 ? "kanji" : "romaji") : promptType;
-  return effective === "romaji" ? "reading" : "jp";
+  const effective = promptType === "mixed" ? FLASH_MIXED_POOL[Math.floor(Math.random() * 3)] : promptType;
+  if (effective === "romaji") return "reading";
+  if (effective === "kana") return "kana";
+  return "jp";
 }
 
 function buildFlashcards(pool, promptType) {
@@ -1146,7 +1150,10 @@ function FlashcardsSetup({ pool, onBack, onStart }) {
           <span className="setup-label">Card front</span>
           <div className="option-row segmented">
             <button className={`option-btn${promptType === "kanji" ? " option-btn-active" : ""}`} onClick={() => setPromptType("kanji")}>
-              Kanji / Kana
+              Kanji
+            </button>
+            <button className={`option-btn${promptType === "kana" ? " option-btn-active" : ""}`} onClick={() => setPromptType("kana")}>
+              Kana
             </button>
             <button className={`option-btn${promptType === "romaji" ? " option-btn-active" : ""}`} onClick={() => setPromptType("romaji")}>
               Romaji
@@ -1211,6 +1218,8 @@ function Flashcards({ config, showFurigana, onExit }) {
           <div className="flash-face flash-front">
             {card.front === "jp" ? (
               <span className="jp-display flash-jp"><JpText item={card.item} showFurigana={showFurigana} /></span>
+            ) : card.front === "kana" ? (
+              <span className="flash-romaji">{card.item.kana || card.item.jp}</span>
             ) : (
               <span className="flash-romaji">{card.item.reading}</span>
             )}
