@@ -1596,7 +1596,7 @@ rt { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; color: va
 .is-flipped .flash-card-inner { transform: rotateY(180deg); }
 .flash-face {
   position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px;
-  display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; overflow-y: auto;
+  display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; overflow: hidden;
 }
 .flash-front { background: var(--paper-deep); border: 1px solid rgba(42,39,35,0.12); }
 .flash-back-face {
