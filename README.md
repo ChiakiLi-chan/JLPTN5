@@ -1,54 +1,26 @@
 # N5道場 — JLPT N5 Practice
 
-Vite + React frontend, with a Vercel serverless API (`/api/leaderboard`) backed
-by Redis for a real, shared leaderboard across every device and person who
-plays this deployment.
+A JLPT N5 vocabulary trainer: multiple-choice quizzes, card matching,
+flashcards, and Time Attack, across 608 words in ten grammatical categories.
 
-## Deploy to Vercel
+Vite + React frontend, with a serverless API (`/api/leaderboard`) backed by
+Redis for a shared leaderboard across every device and person who plays this
+deployment.
 
-1. **Push this folder to a GitHub repo**, then import it in the
-   [Vercel dashboard](https://vercel.com/new) (or run `vercel` from this
-   folder with the [Vercel CLI](https://vercel.com/docs/cli) if you'd rather
-   skip GitHub). Vercel auto-detects the Vite framework and the `api/`
-   folder — no extra config needed for that part.
-
-2. **Add a Redis database** (this is the one manual step):
-   - In your Vercel project → **Storage** tab → **Create Database** (or
-     **Browse Marketplace** on newer dashboards) → choose a **Redis**
-     option (Upstash is the common one).
-   - Connect it to this project. Vercel will automatically add the
-     required environment variables for you — you don't need to copy
-     anything by hand.
-   - **Redeploy** the project so the new environment variables actually
-     reach the running app (Vercel usually prompts you to do this
-     automatically after connecting storage).
-
-3. **Verify the env var names match** (only needed if something doesn't
-   work). Go to Project Settings → Environment Variables and check for
-   either pair:
-   - `KV_REST_API_URL` / `KV_REST_API_TOKEN` (legacy naming, still common), or
-   - `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`
-
-   `api/leaderboard.js` already checks both pairs, so either naming works
-   without editing code. If your integration used a *different* prefix
-   entirely (some do, e.g. a custom store name), update the two `process.env`
-   lines at the top of `api/leaderboard.js` to match.
-
-That's it — visiting the deployed URL should now show a working app with a
-persistent, shared leaderboard.
-
-## Local development
-
-Plain `npm run dev` only serves the frontend — `/api/leaderboard` calls will
-fail locally with that alone, since Vite doesn't run serverless functions.
-To test the full thing locally:
+## Running locally
 
 ```bash
-npm install -g vercel        # once
-vercel link                  # links this folder to your Vercel project
-vercel env pull .env.development.local
-vercel dev                   # runs both the frontend and /api together
+npm install
+npm run dev
 ```
+
+That serves the frontend only. The quiz, flashcards and Time Attack all work
+fully offline — the word list is bundled into the build — but leaderboard
+calls will fail, since Vite doesn't run serverless functions.
+
+To exercise `/api/leaderboard` locally you need a Redis instance and a
+`REDIS_URL` environment variable pointing at it. The API test script (below)
+does exactly this against a local `redis-server`.
 
 ## Updating the word list
 
@@ -67,26 +39,28 @@ src/data/adverbs.json               (35)   src/data/katakana.json        (46)
 src/data/preNounAdjectivals.json     (8)   src/data/kanji.json          (103)
 ```
 
-To fix a single entry, edit its JSON file and redeploy — `src/data/vocabulary.js`
-picks it up automatically, assigning ids and filling in any absent fields.
+To fix a single entry, edit its JSON file — `src/data/vocabulary.js` picks it
+up automatically, assigning ids and filling in any absent fields.
 
 Rows omit the `category` field (implied by the filename) and omit fields that
 are null for the whole category: the kana files carry no `meaning`, and only
 `kanji.json` carries `onyomi`/`kunyomi`. A row needs `jp` plus whichever
 fields its category uses.
 
-To replace the whole set:
-
-1. Re-download your Google Sheet as `.xlsx`.
-2. Hand it back to Claude and ask it to regenerate the ten JSON files in
-   `src/data/` from the new file.
-3. Redeploy.
+To replace the whole set, re-download the source spreadsheet as `.xlsx` and
+regenerate the ten JSON files from it.
 
 ## Leaderboard rules
 
 - One leaderboard per exact combination of **category + question count +
   mode** (e.g. "Nouns · 10Q · Normal" and "Mixed · 20Q · Hard" are separate).
-- Ranked by **time to complete**, fastest first, top 10 kept.
+- Ranked by **accuracy first, then time** — a 10/10 always beats a 9/10, and
+  time breaks ties within the same score. `rankingScore()` in
+  `shared/leaderboardRules.js` is the one definition of this; the server sorts
+  by it and the client uses it to decide whether a run would place. Top 10 kept.
+- The name prompt only appears when the run would **actually make the board**.
+  If the leaderboard can't be reached, no prompt appears at all rather than
+  asking for a name that can't be saved.
 - Requires **at least 50% accuracy** to qualify at all, to stop a
   zero-effort speed-click run from topping the board — this is enforced on
   the server (`api/leaderboard.js`), not just the client, so it can't be
@@ -119,6 +93,11 @@ The caller's address comes from `x-real-ip`, falling back to the *rightmost*
 `x-forwarded-for` entry. The leftmost entry is client-supplied and would let
 anyone mint a fresh identity per request just by setting a header.
 
+**Known limitation — shared networks.** The per-IP limit pools everyone
+behind one public address, so a classroom or a mobile carrier's CGNAT shares
+a single budget. A group studying together could trip it while doing nothing
+wrong. Raise `RATE_LIMIT_SUBMIT` before sharing the app with a large group.
+
 **What this does not do:** stop cheating. Someone can still submit a
 fabricated perfect run, just 20 times an hour instead of thousands. Closing
 that needs signed session tokens — the server issues a token at quiz start
@@ -126,7 +105,7 @@ and verifies the elapsed time on submit. Worth doing only if people actually
 start gaming it.
 
 There's also no admin path for deleting a poisoned board; you'd remove the
-key (`leaderboard:{category}:{count}:{mode}`) in the Upstash console.
+key (`leaderboard:{category}:{count}:{mode}`) in the Redis console.
 
 ## Tests
 
@@ -186,8 +165,10 @@ shared/rateLimit.js          per-IP limits and the global write budget (server-o
 ```
 
 `shared/` sits outside `src/` on purpose: `api/leaderboard.js` imports from it
-too, which is what keeps the accuracy bar and plausibility floor identical on
-both sides.
+too, which is what keeps the ranking rule, accuracy bar and plausibility floor
+identical on both sides.
+
+The API reads its connection string from `REDIS_URL`.
 
 ### Where to change what
 
@@ -196,7 +177,7 @@ both sides.
 | A word, reading, or meaning | the matching `src/data/*.json` |
 | What a question asks, or how distractors are chosen | `src/lib/quizEngine.js` |
 | Time-attack seconds per question | `TIME_LIMITS` in `src/lib/quizEngine.js` |
-| Leaderboard qualification rules | `shared/leaderboardRules.js` (client + server both read it) |
+| Leaderboard ranking and qualification | `shared/leaderboardRules.js` (client + server both read it) |
 | Rate limit thresholds | `RATE_LIMIT_SUBMIT` / `RATE_LIMIT_READ` / `GLOBAL_DAILY_WRITE_BUDGET` in `shared/leaderboardRules.js` |
 | Any single screen's markup | that screen's file in `src/components/` |
 | Colors, spacing, fonts | `src/styles/base.css` |
